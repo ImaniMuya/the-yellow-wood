@@ -1,12 +1,20 @@
 import GameState from "./state"
+import { setUpInputs, drawHUD } from "./hud"
+import { SIZE, getEl, canvas } from "./globals"
 
-const getEl = x => document.getElementById(x)
-const canvas = getEl("canvas")
+
 const ctx = canvas.getContext("2d")
-ctx.fillStyle = "red"
-ctx.fillRect(0, 0, canvas.width, canvas.height)
+canvas.width = SIZE
+canvas.height = SIZE
 
+setUpInputs()
 // game loop in state.js
 window.gameState = new GameState()
+gameState.setState(GameState.GAME, () =>{}, gameDraw);
 
 gameState.tick();
+
+function gameDraw() {
+  ctx.clearRect(0,0,SIZE,SIZE)
+  drawHUD(ctx)
+}
