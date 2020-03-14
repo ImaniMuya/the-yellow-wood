@@ -1,4 +1,4 @@
-export class enemy{
+export class Enemy{
     constructor(position, speed, health, type){
         this.position = position;
         this.speed = speed;
