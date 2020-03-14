@@ -1,7 +1,8 @@
+import { getEl, canvas } from "./globals"
 export default class GameState {
   constructor() {
     this.state = 0
-    this.update = ()=>{ console.log("update")}
+    this.update = ()=>{}
     this.draw = ()=>{}
   }
   static get MENU() {return 0}
@@ -13,9 +14,12 @@ export default class GameState {
   }
 
   setState(num, update, draw) {
-    this.state = num //maybe add logic
+    if (this.inState(num)) return
+    this.state = num
     this.update = update
     this.draw = draw
+    hideOuterDivs()
+    divDict[num].classList.remove("nodisplay")
   }
 
 
@@ -30,6 +34,19 @@ export default class GameState {
     }
     this.draw();
     requestAnimationFrame(this.tick.bind(this));
+  }
+}
+
+const divDict = {}
+
+divDict[GameState.GAME] = canvas
+divDict[GameState.MENU] = getEl("menuDiv")
+
+
+const body = getEl("body")
+function hideOuterDivs() {
+  for (let child of body.children) {
+    child.classList.add("nodisplay")
   }
 }
 
