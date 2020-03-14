@@ -4,8 +4,9 @@ import Vector from "./vector";
 import { hitBoxes, windStorms } from "./globals";
 import { checkAndDeselectEnemy } from "./hud"
 
-const fieldFactor = .8;
-const pushFactor = .1;
+const fieldFactor = .8
+const pushFactor = .1
+const nudgeFactor = .2
 
 export class Enemy {
     constructor(position, radius, width, height, speed, health, type, field){
@@ -22,9 +23,9 @@ export class Enemy {
         this.deleted = false;
         this.born = false;
         this.windVector = null
+        this.nudgeVector = null
         this.r = 20
     }
-
     static get types(){
         return [
             this.BASIC()
@@ -67,13 +68,21 @@ export class Enemy {
             fcv = Vector.normalize(fcv)
         }
 
-        this.vel.x = (fieldFactor * fcv.x) + ((1-fieldFactor)*this.vel.x);
-        this.vel.y = (fieldFactor * fcv.y) + ((1-fieldFactor)*this.vel.y);
-
+        this.vel.x = (fieldFactor * fcv.x) + ((1-fieldFactor)*this.vel.x)
+        this.vel.y = (fieldFactor * fcv.y) + ((1-fieldFactor)*this.vel.y)
+        
+        // from wind
         if (this.windVector != null){
-            this.vel.x = (pushFactor * this.windVector.x) + ((1-pushFactor)*this.vel.x);
-            this.vel.y = (pushFactor * this.windVector.y) + ((1-pushFactor)*this.vel.y);
+            this.vel.x = (pushFactor * this.windVector.x) + ((1-pushFactor)*this.vel.x)
+            this.vel.y = (pushFactor * this.windVector.y) + ((1-pushFactor)*this.vel.y)
             this.windVector = null;
+        }
+
+        // from nudge
+        if (this.nudgeVector != null){
+            this.vel.x += (nudgeFactor * this.nudgeVector.x)
+            this.vel.y += (nudgeFactor * this.nudgeVector.y)
+            this.nudgeVector = null;
         }
 
         this.position.x += this.vel.x;

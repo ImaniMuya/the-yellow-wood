@@ -9,3 +9,9 @@ export const bulletSpeed = 5;
 export const windStorms = [];
 export const bulletRadius = 5;
 export const enemySpeed = 100;
+export const windType = {
+  state: 0,
+  DIVERGING: 0,
+  CONVERGING: 1
+};
+export const LINEWIDTH = 4

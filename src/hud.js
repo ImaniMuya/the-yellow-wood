@@ -1,4 +1,4 @@
-import { SIZE, canvas, towers, enemies, windStorms } from "./globals"
+import { SIZE, canvas, towers, enemies, windStorms, windType, LINEWIDTH } from "./globals"
 import Vector from "./vector"
 import Tower from "./tower";
 import { Enemy } from "./enemy";
@@ -40,6 +40,7 @@ export function setUpInputs() {
   window.addEventListener("mousedown", e => {
     e.preventDefault()
     updateCursorPos(e)
+    console.log(cursor)
     let k = e.button
     keys[k] = true
     if (k != MLEFT) return //only left click
@@ -86,7 +87,11 @@ export function setUpInputs() {
       windStorms.push(ws)
       enemies.forEach(enemy => {
         if(ws.contains(enemy)){
-          enemy.windVector = ws.getPullVector(enemy.position)
+          if (windType.state == windType.CONVERGING) {
+            enemy.windVector = ws.getPullVector(enemy.position)
+          } else {
+            enemy.windVector = ws.getPushVector(enemy.position)
+          }
         }
       });
       cursorHoldState = NO_SELECTION
@@ -143,6 +148,16 @@ function drawUpperHUD(ctx) {
   ctx.fillStyle = "purple"
   ctx.font = "20px Arial";
   ctx.fillText("resource", 30, 30)
+
+  //draw rect around d/c wind
+  ctx.strokeStyle = "yellow"
+  ctx.lineWidth = 7
+  if (windType.state == windType.CONVERGING) {
+    ctx.strokeRect(625,30,130,130)
+  } else {
+    ctx.strokeRect(800,30,130,130)
+  }
+  ctx.lineWidth = LINEWIDTH
 }
 
 const LH = SIZE * .25
@@ -235,9 +250,20 @@ function waveBtnClicked() {
   }
 }
 
+function convStormBtnClicked() {
+  windType.state = windType.CONVERGING
+  console.log(windType)
+}
+
+function divStormBtnClicked() {
+  windType.state = windType.DIVERGING
+  console.log(windType)
+}
+
 var buttons = {
   "archer": new Button(240,30,100,100,archerBtnClicked),
   "storm": new Button(455,46,100,100,stormBtnClicked),
-  "wave": new Button(800,10,100,30,waveBtnClicked),
-
+  // "wave": new Button(800,10,100,30,waveBtnClicked),
+  "convStormBtn": new Button(625,30,130,130,convStormBtnClicked),
+  "divStormBtn": new Button(800,30,130,130,divStormBtnClicked),
 }
