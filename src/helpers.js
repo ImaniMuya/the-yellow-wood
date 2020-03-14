@@ -33,4 +33,20 @@ export default class Helpers{
              return true;
          }
      }
+     circleContainsPoint(position1, r, position2){
+         if(getDistance(position1, position2) <= r){
+             return true;
+         } else{
+             return false;
+         }
+     }
+
+     circleContainCircle(position1, r1, position2, r2){
+         const bigCircleR = r1 + r2;
+         if(this.circleContainsPoint(position1, bigCircleR, position2)){
+             return true;
+         }else{
+             return false;
+         }
+     }
 }
