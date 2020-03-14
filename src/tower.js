@@ -1,3 +1,4 @@
+import Helpers from "./helpers"
 export default class Tower{
     constructor(position, type, reloadTime, damage, range){
         this.position = position;
@@ -26,16 +27,17 @@ export default class Tower{
             const enemies= [];
             const inRangeEnemies = [];
             enemies.forEach(enemy => {
-                if(getDistance(enemy, this.position) <= this.range){
+                if(Helpers.getDistance(enemy, this.position) <= this.range){
                     inRangeEnemies.push(enemy);
                 }
             });
             if(inRangeEnemies.length === 0){
                 return null;
             }
-            this.target = getClosestToBase(inRangeEnemies);
+            this.target = Helpers.getClosestToBase(inRangeEnemies);
             if(this.lastFired < (Date.now() - this.reloadTime)){
                 this.lastFired = Date.now() - this.reloadTime; //this will cause tower to fire instancely after finding a new target 
+
             }
             return this.target;
         }
