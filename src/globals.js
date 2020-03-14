@@ -19,3 +19,4 @@ export const windType = {
   CONVERGING: 1
 };
 export const LINEWIDTH = 4
+export const towerCost = 30;

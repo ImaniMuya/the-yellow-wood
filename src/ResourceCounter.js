@@ -1,6 +1,6 @@
 export class ResourceCounter{
   constructor(){
-    this.total = 0;
+    this.total = 200;
   }
   spendResources(num){
     this.total -= num;

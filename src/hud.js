@@ -1,4 +1,4 @@
-import { SIZE, canvas, towers, enemies, windStorms, windType, LINEWIDTH } from "./globals"
+import { SIZE, canvas, towers, enemies, windStorms, windType, LINEWIDTH, towerCost } from "./globals"
 import Vector from "./vector"
 import Tower from "./tower";
 import { Enemy } from "./enemy";
@@ -87,8 +87,9 @@ export function setUpInputs() {
         return
       }
       // TODO: tower collision (check neighbors)
-      let tower = new Tower({x:cursor.x,y:cursor.y}, Tower.BASIC, 1000, 10, 300)
+      let tower = new Tower({x:cursor.x,y:cursor.y}, Tower.BASIC, 1000, 10, 200)
       towers.push(tower)
+      resourceCounter.spendResources(towerCost);
       cursorHoldState = NO_SELECTION
       selectedObject = tower
     } else if (cursorHoldState == ABILITY){
@@ -254,6 +255,10 @@ class Button {
 
 
 function archerBtnClicked() {
+  if(resourceCounter.getResources() < towerCost){
+    //can't afford Tower
+    return
+  }
   cursorHoldState = TOWER
   selectedObject = null
 }
