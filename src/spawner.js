@@ -32,7 +32,7 @@ export default class Spawner{
     }
 
     generateWave(difficulty, number){
-        let enemyHealth = 50 + (10* Helpers.randomBetween(1, difficulty));
+        let enemyHealth = 30 + (30* Helpers.randomBetween(1, difficulty));
         for (let i = 0; i <= number; i++){
             const newEnemy = new Enemy( {x: this.spawnLoc.x, y: this.spawnLoc.y}, 40, 0, 0, enemySpeed, enemyHealth, Enemy.BASIC, field1);
             this.enemiesToSpawn.push(newEnemy);

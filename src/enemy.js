@@ -102,6 +102,7 @@ export class Enemy {
     hitTown(){
         resourceCounter.loseLife();
         this.deleted = true;
+        this.dead = true;
     }
 
     lose(){
