@@ -1,9 +1,10 @@
 import { getFieldVector, B } from "./fields";
 import Helpers from "./helpers";
 import Vector from "./vector";
-import { hitBoxes } from "./globals";
+import { hitBoxes, windStorms } from "./globals";
 
 const fieldFactor = .8;
+const pushFactor = .1;
 
 export class Enemy {
     constructor(position, width, height, speed, health, type, field){
@@ -17,6 +18,7 @@ export class Enemy {
         this.dead = false;
         this.field = field;
         this.deleted = false;
+        this.windVector = null
     }
 
     static get BASIC() { return 52 }
@@ -57,6 +59,12 @@ export class Enemy {
 
         this.vel.x = (fieldFactor * fcv.x) + ((1-fieldFactor)*this.vel.x);
         this.vel.y = (fieldFactor * fcv.y) + ((1-fieldFactor)*this.vel.y);
+
+        if (this.windVector != null){
+            this.vel.x = (pushFactor * this.windVector.x) + ((1-pushFactor)*this.vel.x);
+            this.vel.y = (pushFactor * this.windVector.y) + ((1-pushFactor)*this.vel.y);
+            this.windVector = null;
+        }
 
         this.position.x += this.vel.x;
         this.position.y += this.vel.y;

@@ -1,8 +1,9 @@
-import { SIZE, canvas, towers, enemies } from "./globals"
+import { SIZE, canvas, towers, enemies, windStorms } from "./globals"
 import Vector from "./vector"
 import Tower from "./tower";
 import { Enemy } from "./enemy";
 import { field1, isOnPlatform } from "./fields";
+import WindStorm from "./wind";
 
 // HUD and input
 const keys = {} //for debug 
@@ -62,7 +63,13 @@ export function setUpInputs() {
       towers.push(tower)
       cursorHoldState = NO_SELECTION
     } else if (cursorHoldState == ABILITY){
-      // TODO: Create wind storm
+      let ws = new WindStorm({x:cursor.x,y:cursor.y}, WindStorm.DIVERGE, 100)      
+      windStorms.push(ws)
+      enemies.forEach(enemy => {
+        if(ws.contains(enemy)){
+          enemy.windVector = ws.getPullVector(enemy.position)
+        }
+      });
       cursorHoldState = NO_SELECTION
     }
 

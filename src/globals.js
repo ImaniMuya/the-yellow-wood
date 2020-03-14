@@ -6,3 +6,4 @@ export const towers = [];
 export const enemies = [];
 export const hitBoxes = []; 
 export const bulletSpeed = 5;
+export const windStorms = [];
