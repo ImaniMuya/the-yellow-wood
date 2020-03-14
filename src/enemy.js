@@ -1,4 +1,4 @@
-import { getFieldVector, B } from "./fields";
+import { getFieldVector, B, isOnPath } from "./fields";
 import Helpers from "./helpers";
 import Vector from "./vector";
 import { hitBoxes, windStorms } from "./globals";
@@ -25,6 +25,7 @@ export class Enemy {
         this.windVector = null
         this.nudgeVector = null
         this.r = 20
+        this.inWall = true
     }
     static get types(){
         return [
@@ -33,6 +34,7 @@ export class Enemy {
     } 
 
     static get BASIC() { return 52 }
+    static get BOSS() { return 53 }
 
     get x(){ return this.position.x}
     get y(){ return this.position.y}
@@ -63,7 +65,7 @@ export class Enemy {
         // from flow field
         let fcv = this.getFieldComboVector()
         if(Helpers.closeTo(fcv.x, 0) && Helpers.closeTo(fcv.x, 0)) {
-            fcv = new Vector(0,0)
+            fcv = new Vector(Math.random()*2,Math.random()*2)
         } else {
             fcv = Vector.normalize(fcv)
         }
@@ -119,13 +121,15 @@ export class Enemy {
         ctx.beginPath()
         ctx.arc(this.x,this.y,this.radius,0,2*Math.PI)
         ctx.fill()
+        // spritesheet, frames, frameSelector
+        // anim = new Animation(spritesheet, frames, frameSelector)
     }
     getFieldComboVector(){
         let fx = this.x - B/2;
         let fy = this.y - B/2;
         let cx = this.x + B/2;
         let cy = this.y + B/2;
-
+        
         let v1 = getFieldVector(this.field, fx, fy);
         let v2 = getFieldVector(this.field, fx, cy);
         let v3 = getFieldVector(this.field, cx, fy);

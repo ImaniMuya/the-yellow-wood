@@ -41,6 +41,7 @@ export function setUpInputs() {
     e.preventDefault()
     updateCursorPos(e)
     console.log(cursor)
+  
     let k = e.button
     keys[k] = true
     if (k != MLEFT) return //only left click
@@ -71,7 +72,7 @@ export function setUpInputs() {
       }
       selectedObject = null
     } else if (cursorHoldState == TOWER){
-      
+      if (isInHUD(cursor)) return
       if (!isOnPlatform(field1, cursor.x, cursor.y)) {
         // TODO: sfx ding? 
         console.log("cant place")
@@ -83,6 +84,7 @@ export function setUpInputs() {
       cursorHoldState = NO_SELECTION
       selectedObject = tower
     } else if (cursorHoldState == ABILITY){
+      if (isInHUD(cursor)) return
       let ws = new WindStorm({x:cursor.x,y:cursor.y}, WindStorm.DIVERGE, 100)      
       windStorms.push(ws)
       enemies.forEach(enemy => {
@@ -122,6 +124,12 @@ function updateCursorPos(event) {
   let clientRatio = SIZE/canvas.clientWidth
   cursor.x = (event.pageX - canvas.offsetLeft)*clientRatio
   cursor.y = (event.pageY - canvas.offsetTop)*clientRatio
+}
+
+function isInHUD(position) {
+  if (position.y < SIZE *.17) { return true }
+  if (position.y > SIZE *.68) { return true }
+  return false
 }
 
 const hudImg = new Image(SIZE,SIZE)
