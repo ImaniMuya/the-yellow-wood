@@ -32,9 +32,22 @@ function gameDraw() {
 
 function gameUpdate() {
   towers.forEach(tower => {tower.update()})
-  enemies.forEach(enemy => {enemy.update()})
+  updateEnemies();
   updateHitboxes()
 }
+
+function updateEnemies() {
+  for (let i=0; i<enemies.length; i++) {
+    let enemy = enemies[i]
+    if (enemy.deleted) { 
+      enemies.splice(i, 1)
+      i -= 1
+    } else {
+      enemy.update()
+    }
+  }
+}
+
 
 function updateHitboxes() {
   for (let i=0; i<hitBoxes.length; i++) {

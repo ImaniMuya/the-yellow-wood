@@ -48,6 +48,10 @@ export default class Tower{
     }
 
     shoot() {
+        if(this.target.dead === true){
+            this.target = null;
+            return
+        }
         if(Helpers.getDistance(this.position, this.target.position) <= this.range){
             //creat bullet with target
             const p = new Vector(this.x, this.y)

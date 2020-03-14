@@ -26,14 +26,29 @@ export default class Helpers{
         return false;
     } 
 
-    static rectContainsRect(x1, x2, y1, y2,  w1, w2, h1,h2 ){
-        if(x1 > x2 + w2 || y1 > y2 + h2 || x2 > x1 + w1 || y2 > y1 + h1){
-            return false;
-        } else{
-            return true;
-        }
-    }
+     static rectContainsRect(x1, x2, y1, y2,  w1, w2, h1,h2 ){
+         if(x1 > x2 + w2 || y1 > y2 + h2 || x2 > x1 + w1 || y2 > y1 + h1){
+             return false;
+         } else{
+             return true;
+         }
+     }
+     static circleContainsPoint(position1, r, position2){
+         if(getDistance(position1, position2) <= r){
+             return true;
+         } else{
+             return false;
+         }
+     }
 
+     static circleContainCircle(position1, r1, position2, r2){
+         const bigCircleR = r1 + r2;
+         if(this.circleContainsPoint(position1, bigCircleR, position2)){
+             return true;
+         }else{
+             return false;
+         }
+     }
     static closeTo(a, b) {
         return Math.abs(a-b) <= .01;
     }

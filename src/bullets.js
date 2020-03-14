@@ -1,3 +1,4 @@
+import Vector from "./vector";
 export default class Bullet {
     constructor(position, speed, damage, type, target){
         this.position = position;
@@ -34,9 +35,9 @@ export default class Bullet {
     move(){
        const xDiff = this.target.position.x - this.position.x;
        const yDiff = this.target.position.y - this.position.y;
-       const total = Math.abs(xDiff + yDiff); // potentally wrong or exactly right
-       const xMag = xDiff / total;
-       const yMag = yDiff / total;
+       let vector = Vector.normalize(new Vector(xDiff, yDiff));
+       let xMag = vector.x;
+       let yMag = vector.y;
        const xVel = xMag * this.speed;
        const yVel = yMag * this.speed;
        this.position.x += xVel;
