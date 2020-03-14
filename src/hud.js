@@ -16,6 +16,7 @@ const K_2 = 50
 const K_3 = 51
 const K_SPACE = 32
 const K_ESC = 27
+const K_B = 66
 
 var cursorHoldState = 0 //tower or ability
 const NO_SELECTION = 0 
@@ -31,6 +32,12 @@ export function setUpInputs() {
     if (k == K_ESC){
       cursorHoldState = NO_SELECTION
       selectedObject = null
+    }
+    if (k === K_B){
+      archerBtnClicked();
+    }
+    if(k === K_SPACE){
+      stormBtnClicked();
     }
   })
   window.addEventListener("keyup", e => {
@@ -128,7 +135,7 @@ function updateCursorPos(event) {
 const hudImg = new Image(SIZE,SIZE)
 hudImg.src = "../assets/hud.png"
 export function drawHUD(ctx) {
-  ctx.drawImage(hudImg, 0, 0, SIZE, SIZE)
+  //ctx.drawImage(hudImg, 0, 0, SIZE, SIZE)
   drawCursorHoldObject(ctx)
 
   drawUpperHUD(ctx)
@@ -235,6 +242,8 @@ class Button {
     ctx.strokeRect(this.x,this.y,this.w,this.h)
   }
 }
+
+
 
 function archerBtnClicked() {
   cursorHoldState = TOWER
