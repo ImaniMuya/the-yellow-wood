@@ -33,7 +33,7 @@ export default class GameState {
   }
 }
 
-const UPDATES_PER_SEC = 1;
+const UPDATES_PER_SEC = 30;
 const MS_PER_UPDATE = 1000 / UPDATES_PER_SEC;
 var lastTime = Date.now();
 var lag = 0;

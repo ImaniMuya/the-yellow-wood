@@ -4,3 +4,4 @@ export const canvas = getEl("canvas")
 
 export const towers = []
 export const enemies = []
+export const hitBoxes = []
