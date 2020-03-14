@@ -34,7 +34,7 @@ export default class Helpers{
          }
      }
      static circleContainsPoint(position1, r, position2){
-         if(getDistance(position1, position2) <= r){
+         if(this.getDistance(position1, position2) <= r){
              return true;
          } else{
              return false;

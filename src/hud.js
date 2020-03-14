@@ -170,8 +170,8 @@ function stormBtnClicked() {
 }
 
 function waveBtnClicked() {
-  for (let i=0; i<10; i++){
-    let enemy = new Enemy({x:10,y:100}, 20, 20, 5, 1, Enemy.BASIC, field1)
+  for (let i=0; i<1; i++){
+    let enemy = new Enemy({x:10,y:100}, 40, 20, 20, 1000, 100, Enemy.BASIC, field1)
     enemies.push(enemy)
   }
 }

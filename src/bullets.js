@@ -1,11 +1,12 @@
 import Vector from "./vector";
 export default class Bullet {
-    constructor(position, speed, damage, type, target){
+    constructor(position, radius, speed, damage, type, target){
         this.position = position;
+        this.radius = radius;
         this.speed = speed;
         this.damage = damage;
         this.type = type;
-        if(this.type === "divergence"){
+        if(!target.position){
             this.target = {
                 position: {
                     x: target.x,
@@ -16,8 +17,10 @@ export default class Bullet {
             this.target = target;
         }
         this.deleted = false;
-        this.lifeSpan = 100000;
-        this.lifeEnd = Date.now() + this.lifeEnd;
+        this.lifeSpan = 2000;
+        this.lifeEnd = Date.now() + this.lifeSpan;
+        this.xVel = 0;
+        this.yVel = 0;
     }
 
     get x(){ return this.position.x }
@@ -33,15 +36,21 @@ export default class Bullet {
     }
 
     move(){
-       const xDiff = this.target.position.x - this.position.x;
-       const yDiff = this.target.position.y - this.position.y;
-       let vector = Vector.normalize(new Vector(xDiff, yDiff));
-       let xMag = vector.x;
-       let yMag = vector.y;
-       const xVel = xMag * this.speed;
-       const yVel = yMag * this.speed;
-       this.position.x += xVel;
-       this.position.y += yVel;
+        if (this.target.dead && (this.xVel !== 0 && this.yVel !== 0 )){
+            this.position.x += this.xVel;
+            this.position.y += this.yVel;
+        }else{
+
+            const xDiff = this.target.position.x - this.position.x;
+            const yDiff = this.target.position.y - this.position.y;
+            let vector = Vector.normalize(new Vector(xDiff, yDiff));
+            let xMag = vector.x;
+            let yMag = vector.y;
+            this.xVel = xMag * this.speed;
+            this.yVel = yMag * this.speed;
+            this.position.x += this.xVel;
+            this.position.y += this.yVel;
+        }
 
     }
 
