@@ -1,6 +1,6 @@
 import GameState from "./state"
 import { setUpInputs, drawHUD } from "./hud"
-import { SIZE, getEl, canvas, towers, enemies, hitBoxes} from "./globals"
+import { SIZE, getEl, canvas, towers, enemies, hitBoxes, windStorms} from "./globals"
 import { drawMap1 } from "./fields"
 import Spawner from "./spawner";
 
@@ -32,6 +32,7 @@ function gameDraw() {
   ctx.clearRect(0,0,SIZE,SIZE)
   drawMap1(ctx)
   towers.forEach(tower => {tower.draw(ctx)})
+  windStorms.forEach(ws => {ws.draw(ctx)})
   enemies.forEach(enemy => {enemy.draw(ctx)})
   hitBoxes.forEach(hb => {hb.draw(ctx)})
   drawHUD(ctx)
@@ -42,6 +43,7 @@ function gameUpdate() {
   updateHitboxes()
   waveSpawner.update();
   updateEnemies();
+  updateWindStorms()
 }
 
 function updateEnemies() {
@@ -65,6 +67,18 @@ function updateHitboxes() {
       i -= 1
     } else {
       hb.update()
+    }
+  }
+}
+
+function updateWindStorms() {
+  for (let i=0; i<windStorms.length; i++) {
+    let ws = windStorms[i]
+    if (ws.dead) { 
+      windStorms.splice(i, 1)
+      i -= 1
+    } else {
+      ws.update()
     }
   }
 }
