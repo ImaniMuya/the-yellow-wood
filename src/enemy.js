@@ -2,6 +2,7 @@ import { getFieldVector, B } from "./fields";
 import Helpers from "./helpers";
 import Vector from "./vector";
 import { hitBoxes, windStorms } from "./globals";
+import { checkAndDeselectEnemy } from "./hud"
 
 const fieldFactor = .8;
 const pushFactor = .1;
@@ -20,6 +21,7 @@ export class Enemy {
         this.field = field;
         this.deleted = false;
         this.windVector = null
+        this.r = 20
     }
 
     static get BASIC() { return 52 }
@@ -50,6 +52,7 @@ export class Enemy {
         this.dead = true;
         console.log("dead");
         this.deleted = true;
+        checkAndDeselectEnemy(this)
     }
     move(){
         // from flow field
@@ -133,4 +136,13 @@ export class Enemy {
         )
     }
 
+    contains(position) {
+        return Helpers.circleContainsPoint(this.position, this.r, position)
+    }
+
+    static drawEnemyProfile(ctx) {
+        //TODO: base image on type
+        ctx.fillStyle = "green"
+        ctx.fillRect(40,700,300,275)
+    }
 }

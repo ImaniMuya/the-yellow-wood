@@ -3,7 +3,7 @@ import Bullet from "./bullets.js";
 import { hitBoxes, bulletSpeed, bulletRadius, enemies} from "./globals";
 import Vector from "./vector";
 
-
+const towerR = 20
 export default class Tower{
     constructor(position, type, reloadTime, damage, range){
         this.position = position;
@@ -85,5 +85,12 @@ export default class Tower{
         ctx.fill()
     }
 
+    contains(position) {
+        return Helpers.circleContainsPoint(this.position, towerR, position)
+    }
 
+    static drawTowerProfile(ctx) {
+        ctx.fillStyle = "red"
+        ctx.fillRect(40,700,300,275)
+    }
 }
