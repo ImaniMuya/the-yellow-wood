@@ -1,4 +1,4 @@
-import * as globals from ("../globals.js");
+import { hitBoxes} from "./globals";
 export class Enemy{
     constructor(position, speed, health, type, height, width){
         this.position = position;
@@ -9,6 +9,12 @@ export class Enemy{
         this.type = type;
         this.dead = false;
     }
+
+    static get BASIC() { return 52}
+
+    get x(){ return this.position.x}
+    get y(){ return this.position.y}
+
     getSpeed(){
         return this.speed;
     }
@@ -30,7 +36,8 @@ export class Enemy{
         this.dead = true;
     }
     move(){
-
+        // from flow field
+        this.position.x += 1
     }
     lose(){
         this.speed = 0;
@@ -41,7 +48,6 @@ export class Enemy{
     }
 
     checkForHit(){
-        const hitBoxes = globals.hitBoxes;
         hitBoxes.forEach(hitBox => {
             if(rectContainsRect(this.position.x, hitBox.position.x, this.position.y, hitBox.position.y, this.width, hitBox.width, this.height, hitBox.height) === true){
                 this.takeDamage(hitBox.damage);
@@ -52,7 +58,10 @@ export class Enemy{
 
     update(){
         this.move();
-        
+    }
+    draw(ctx) {
+        ctx.fillStyle = "green"
+        ctx.fillRect(this.x, this.y, 50, 50)
     }
 
 }

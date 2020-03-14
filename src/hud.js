@@ -1,5 +1,8 @@
-import { SIZE, canvas, towers } from "./globals"
+import { SIZE, canvas, towers, enemies } from "./globals"
 import Vector from "./vector"
+import Tower from "./tower";
+import { Enemy } from "./enemy";
+import { field1, isOnPlatform } from "./fields";
 
 // HUD and input
 const keys = {} //for debug 
@@ -48,8 +51,15 @@ export function setUpInputs() {
 
       // select enemy
     } else if (cursorHoldState == TOWER){
-      // TODO: check if can place tower
-      towers.push({x:cursor.x,y:cursor.y})
+      
+      if (!isOnPlatform(field1, cursor.x, cursor.y)) {
+        // TODO: sfx ding? 
+        console.log("cant place")
+        return
+      }
+      // TODO: tower collision (check neighbors)
+      let tower = new Tower({x:cursor.x,y:cursor.y}, Tower.BASIC, 1000, 10, 100)
+      towers.push(tower)
       cursorHoldState = NO_SELECTION
     } else if (cursorHoldState == ABILITY){
       // TODO: Create wind storm
@@ -94,6 +104,10 @@ function drawUpperHUD(ctx) {
   // resources, abilities, towers?, callWave
   ctx.fillStyle = "#777"
   ctx.fillRect(0,0,SIZE,UH)
+
+  ctx.fillStyle = "purple"
+  ctx.font = "20px Arial";
+  ctx.fillText("resource", 30, 30)
 }
 
 const LH = SIZE * .25
@@ -150,8 +164,17 @@ function archerBtnClicked() {
 function stormBtnClicked() {
   cursorHoldState = ABILITY
 }
+
+function waveBtnClicked() {
+  for (let i=0; i<10; i++){
+    let enemy = new Enemy({x:500,y:500}, 5, 100, Enemy.BASIC)
+    enemies.push(enemy)
+  }
+}
+
 var buttons = {
-  "archer": new Button(10,10,100,30,archerBtnClicked),
-  "storm": new Button(200,10,100,30,stormBtnClicked),
+  "archer": new Button(125,10,100,30,archerBtnClicked),
+  "storm": new Button(250,10,100,30,stormBtnClicked),
+  "wave": new Button(800,10,100,30,waveBtnClicked),
 
 }

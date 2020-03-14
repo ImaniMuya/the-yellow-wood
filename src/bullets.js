@@ -1,4 +1,4 @@
-export class Bullet{
+export default class Bullet{
     constructor(position, speed, damage, type, target){
         this.position = position;
         this.speed = speed;

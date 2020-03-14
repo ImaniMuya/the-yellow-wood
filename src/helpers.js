@@ -1,12 +1,12 @@
 
-export class Helpers{
+export default class Helpers{
     constructor(){}
-    getDistance(position1, position2){
+    static getDistance(position1, position2){
         const xDiff = Math.pow(position1.x - position2.x, 2);
         const yDiff = Math.pow(position1.y - position2.y, 2);
         return Math.sqrt(xDiff + yDiff);
     }
-    getClosestToBase(enemies){
+    static getClosestToBase(enemies){
         let currentClosestEnemy = enemies[0];
         let currentClosestDistance = -1;
         enemies.forEach(enemy => {
