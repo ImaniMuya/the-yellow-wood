@@ -14,6 +14,8 @@ export default class GameState {
 
   setState(num, update, draw) {
     this.state = num //maybe add logic
+    this.update = update
+    this.draw = draw
   }
 
 
