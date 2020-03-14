@@ -4,6 +4,8 @@ import Vector from "./vector";
 import { hitBoxes, windStorms, resources } from "./globals";
 import Resource from "./resource";
 import { checkAndDeselectEnemy } from "./hud"
+import {resourceCounter} from "./main";
+
 
 const fieldFactor = .8
 const pushFactor = .1
@@ -27,6 +29,8 @@ export class Enemy {
         this.nudgeVector = null
         this.r = 20
         this.inWall = true
+        this.finalR = 50;
+        this.finalPosition = {x:950, y:500}
     }
     static get types(){
         return [
@@ -94,6 +98,12 @@ export class Enemy {
         this.position.x += this.vel.x * this.speed;
         this.position.y += this.vel.y * this.speed;
     }
+
+    hitTown(){
+        resourceCounter.loseLife();
+        this.deleted = true;
+    }
+
     lose(){
         this.speed = 0;
     }
@@ -116,6 +126,9 @@ export class Enemy {
                 hitBox.deleted = true; //TODO: only delete bullets
             }
         });
+        if(Helpers.circleContainCircle(this.position, this.r, this.finalPosition, this.finalR)){
+            this.hitTown();
+        }
     }
     draw(ctx) {
         if(!this.born){

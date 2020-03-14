@@ -49,6 +49,15 @@ function gameDraw() {
 }
 
 function gameUpdate() {
+  if(resourceCounter.getGameOver()){
+    if(resourceCounter.getWin()){
+      console.log("win");
+    }
+    if(resourceCounter.getLose()){
+      console.log("lose");
+    }
+    return //dispaly picture
+  }
   generateMana();
   towers.forEach(tower => {tower.update()})
   updateHitboxes()

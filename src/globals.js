@@ -23,3 +23,4 @@ export const towerCost = 30;
 export const upgradeCost = 10;
 export const towerDamage = 5;
 export const powerCost = 30;
+export const lives = 5;

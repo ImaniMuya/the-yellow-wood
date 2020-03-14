@@ -167,10 +167,12 @@ function drawUpperHUD(ctx) {
   // resources, abilities, towers?, callWave
   ctx.fillStyle = "purple"
   ctx.font = "20px Arial";
-  ctx.fillText("resource", 30, 30)
+  ctx.fillText("Resource", 30, 30)
   ctx.fillText(resourceCounter.getResources(), 60, 50)
-  ctx.fillText("Mana", 100, 30)
+  ctx.fillText("Mana", 115, 30)
   ctx.fillText(resourceCounter.getMana(), 130, 50)
+  ctx.fillText("Lives", 170, 30)
+  ctx.fillText(resourceCounter.getLives(), 200, 50)
 
   //draw rect around d/c wind
   ctx.strokeStyle = "yellow"

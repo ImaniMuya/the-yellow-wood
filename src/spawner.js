@@ -2,6 +2,8 @@ import { Enemy } from "./enemy";
 import { enemySpeed, enemies } from "./globals";
 import { field1 } from "./fields";
 import Helpers from "./helpers";
+import {resourceCounter} from "./main";
+
 
 
 
@@ -13,6 +15,7 @@ export default class Spawner{
         this.timeBetweenWave = timeBetweenWave;
         this.lastSpawnTime = -1;
         this.enemiesToSpawn = [];
+        this.maxWave = 6;
     }
     
     spawn(){
@@ -55,10 +58,13 @@ export default class Spawner{
         }
     }
     update(){
+        if(this.waveNumber > this.maxWave){
+            return
+        }
         this.checkSpawn();
         this.checkWave();
-        if(this.waveNumber === 3){
-            //we won!
+        if(this.waveNumber === this.maxWave && enemies.length === 0 && this.enemiesToSpawn.length === 0){
+            resourceCounter.win();
         }
     }
 }
