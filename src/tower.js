@@ -1,4 +1,6 @@
-import * as helper from ("../helpers.js")
+import * as helper from ("../helpers.js");
+import * as bullet from ("../bullets.js");
+import * as globals from ("../globals.js");
 
 export class Tower{
     constructor(position, type, reloadTime, damage, range){
@@ -40,8 +42,14 @@ export class Tower{
     }
 
     shoot(){
-        //creat bullet with target
-        this.lastFired = this.lastFired + this.reloadTime;
+        if(helper.getDistance <= this.range){
+            //creat bullet with target
+            const newBullet = new bullet(this.position, globals.bulletSpeed, this.damage, "divergence", this.target);
+            globals.hitBoxes.push(newBullet); 
+            this.lastFired = this.lastFired + this.reloadTime;
+        }else{
+            this.target = null;
+        }
     }
 
     update(){

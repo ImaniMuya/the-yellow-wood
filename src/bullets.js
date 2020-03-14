@@ -1,19 +1,19 @@
 export class Bullet{
     constructor(position, speed, damage, type, target){
-    this.position = position;
-    this.speed = speed;
-    this.damage = damage;
-    this.type = type;
-    if(this.type === "divergence"){
-        this.target = {
-            position: target
+        this.position = position;
+        this.speed = speed;
+        this.damage = damage;
+        this.type = type;
+        if(this.type === "divergence"){
+            this.target = {
+                position: target
+            }
+        } else{
+            this.target = target;
         }
-    } else{
-        this.target = target;
-    }
-    this.deleted = false;
-    this.lifeSpan = 100000;
-    this.lifeEnd = new Date() + this.lifeEnd;
+        this.deleted = false;
+        this.lifeSpan = 100000;
+        this.lifeEnd = new Date() + this.lifeEnd;
     }
 
     getTarget(){
