@@ -16,6 +16,7 @@ export class Enemy {
         this.type = type;
         this.dead = false;
         this.field = field;
+        this.deleted = false;
     }
 
     static get BASIC() { return 52 }
@@ -42,6 +43,8 @@ export class Enemy {
         //do death things
         this.speed = 0;
         this.dead = true;
+        console.log("dead");
+        this.deleted = true;
     }
     move(){
         // from flow field
