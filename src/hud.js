@@ -80,9 +80,8 @@ export function setUpInputs() {
   })
 }
 
-const clientRatio = SIZE/canvas.clientWidth
-
 function updateCursorPos(event) {
+  let clientRatio = SIZE/canvas.clientWidth
   cursor.x = (event.pageX - canvas.offsetLeft)*clientRatio
   cursor.y = (event.pageY - canvas.offsetTop)*clientRatio
 }

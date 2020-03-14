@@ -10,7 +10,11 @@ canvas.height = SIZE
 setUpInputs()
 // game loop in state.js
 window.gameState = new GameState()
-gameState.setState(GameState.GAME, gameUpdate, gameDraw);
+function startGame() {
+  gameState.setState(GameState.GAME, gameUpdate, gameDraw)
+}
+
+getEl("playBtn").addEventListener("click", startGame)
 
 gameState.tick();
 // window.towers = towers
@@ -56,4 +60,3 @@ function updateHitboxes() {
     }
   }
 }
-
