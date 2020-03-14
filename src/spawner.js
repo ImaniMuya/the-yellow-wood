@@ -24,7 +24,7 @@ export default class Spawner{
     } 
 
     generateNextWave(){
-        const num = 10 + this.waveNumber * 3
+        const num = 3 + this.waveNumber * 3
         this.generateWave(this.waveNumber, num);
     }
 

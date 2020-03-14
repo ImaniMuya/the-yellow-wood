@@ -91,8 +91,8 @@ export class Enemy {
             this.nudgeVector = null;
         }
 
-        this.position.x += this.vel.x;
-        this.position.y += this.vel.y;
+        this.position.x += this.vel.x * this.speed;
+        this.position.y += this.vel.y * this.speed;
     }
     lose(){
         this.speed = 0;

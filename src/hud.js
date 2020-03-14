@@ -1,4 +1,4 @@
-import { SIZE, canvas, towers, enemies, windStorms, windType, LINEWIDTH, towerCost } from "./globals"
+import { SIZE, canvas, towers, enemies, windStorms, windType, LINEWIDTH, towerCost, towerDamage, powerCost } from "./globals"
 import Vector from "./vector"
 import Tower from "./tower";
 import { Enemy } from "./enemy";
@@ -87,7 +87,7 @@ export function setUpInputs() {
         return
       }
       // TODO: tower collision (check neighbors)
-      let tower = new Tower({x:cursor.x,y:cursor.y}, Tower.BASIC, 1000, 10, 200)
+      let tower = new Tower({x:cursor.x,y:cursor.y}, Tower.BASIC, 1000, towerDamage, 200)
       towers.push(tower)
       resourceCounter.spendResources(towerCost);
       cursorHoldState = NO_SELECTION
@@ -96,6 +96,7 @@ export function setUpInputs() {
       if (isInHUD(cursor)) return
       let ws = new WindStorm({x:cursor.x,y:cursor.y}, WindStorm.DIVERGE, 100)      
       windStorms.push(ws)
+      resourceCounter.spendMana(powerCost);
       enemies.forEach(enemy => {
         if(ws.contains(enemy)){
           if (windType.state == windType.CONVERGING) {
@@ -168,6 +169,8 @@ function drawUpperHUD(ctx) {
   ctx.font = "20px Arial";
   ctx.fillText("resource", 30, 30)
   ctx.fillText(resourceCounter.getResources(), 60, 50)
+  ctx.fillText("Mana", 100, 30)
+  ctx.fillText(resourceCounter.getMana(), 130, 50)
 
   //draw rect around d/c wind
   ctx.strokeStyle = "yellow"
@@ -264,6 +267,10 @@ function archerBtnClicked() {
 }
 
 function stormBtnClicked() {
+  if(resourceCounter.getMana() < powerCost){
+    //can't afford Tower
+    return
+  }
   cursorHoldState = ABILITY
   selectedObject = null
 }

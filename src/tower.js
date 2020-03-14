@@ -2,6 +2,8 @@ import Helpers from "./helpers"
 import Bullet from "./bullets.js";
 import { hitBoxes, bulletSpeed, bulletRadius, enemies} from "./globals";
 import Vector from "./vector";
+import {resourceCounter} from "./main";
+
 
 const towerR = 20
 export default class Tower{
@@ -92,5 +94,15 @@ export default class Tower{
     static drawTowerProfile(ctx) {
         ctx.fillStyle = "red"
         ctx.fillRect(40,700,300,275)
+    }
+
+    upgrade(){
+        if(resourceCounter.getResources() < upgradeCost){
+            //upgrade too expensive
+            return
+        }
+        this.damage += 3;
+        this.range += 50;
+        
     }
 }
