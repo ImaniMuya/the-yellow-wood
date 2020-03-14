@@ -58,7 +58,7 @@ export function setUpInputs() {
         return
       }
       // TODO: tower collision (check neighbors)
-      let tower = new Tower({x:cursor.x,y:cursor.y}, Tower.BASIC, 1000, 10, 100)
+      let tower = new Tower({x:cursor.x,y:cursor.y}, Tower.BASIC, 1000, 10, 300)
       towers.push(tower)
       cursorHoldState = NO_SELECTION
     } else if (cursorHoldState == ABILITY){
@@ -86,7 +86,11 @@ function updateCursorPos(event) {
   cursor.x = (event.pageX - canvas.offsetLeft)*clientRatio
   cursor.y = (event.pageY - canvas.offsetTop)*clientRatio
 }
+
+const hudImg = new Image(SIZE,SIZE)
+hudImg.src = "../assets/hud.png"
 export function drawHUD(ctx) {
+  // ctx.drawImage(hudImg, 0, 0, SIZE, SIZE)
   drawCursorHoldObject(ctx)
 
   drawUpperHUD(ctx)
@@ -102,8 +106,8 @@ const UH = SIZE * .1
 
 function drawUpperHUD(ctx) {
   // resources, abilities, towers?, callWave
-  ctx.fillStyle = "#777"
-  ctx.fillRect(0,0,SIZE,UH)
+  // ctx.fillStyle = "#777"
+  // ctx.fillRect(0,0,SIZE,UH)
 
   ctx.fillStyle = "purple"
   ctx.font = "20px Arial";
@@ -114,8 +118,8 @@ const LH = SIZE * .25
 function drawLowerHUD(ctx) {
   // selected upgrades and details
   
-  ctx.fillStyle = "#999"
-  ctx.fillRect(0,SIZE-LH,SIZE,LH)
+  // ctx.fillStyle = "#999"
+  // ctx.fillRect(0,SIZE-LH,SIZE,LH)
 }
 
 function drawCursorHoldObject(ctx) {
@@ -167,7 +171,7 @@ function stormBtnClicked() {
 
 function waveBtnClicked() {
   for (let i=0; i<10; i++){
-    let enemy = new Enemy({x:500,y:500}, 5, 100, Enemy.BASIC)
+    let enemy = new Enemy({x:10,y:100}, 20, 20, 5, 100, Enemy.BASIC, field1)
     enemies.push(enemy)
   }
 }
