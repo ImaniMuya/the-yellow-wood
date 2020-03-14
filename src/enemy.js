@@ -20,9 +20,16 @@ export class Enemy {
         this.dead = false;
         this.field = field;
         this.deleted = false;
+        this.born = false;
         this.windVector = null
         this.r = 20
     }
+
+    static get types(){
+        return [
+            this.BASIC()
+        ];
+    } 
 
     static get BASIC() { return 52 }
 
@@ -39,9 +46,7 @@ export class Enemy {
         return this.health;
     }
     takeDamage(damage){
-        console.log(damage);
         this.health = this.health - damage;
-        console.log(this.health);
         if(this.health<= 0){
             this.die();
         }
@@ -50,7 +55,6 @@ export class Enemy {
         //do death things
         this.speed = 0;
         this.dead = true;
-        console.log("dead");
         this.deleted = true;
         checkAndDeselectEnemy(this)
     }
@@ -99,14 +103,12 @@ export class Enemy {
         });
     }
     draw(ctx) {
+        if(!this.born){
+            return
+        }
         ctx.fillStyle = "green"
         ctx.beginPath()
         ctx.arc(this.x,this.y,this.radius,0,2*Math.PI)
-        ctx.fill()
-
-        ctx.fillStyle = "blue"
-        ctx.beginPath()
-        ctx.arc(this.x,this.y,2,0,2*Math.PI)
         ctx.fill()
     }
     getFieldComboVector(){

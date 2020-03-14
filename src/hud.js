@@ -230,6 +230,7 @@ function stormBtnClicked() {
 function waveBtnClicked() {
   for (let i=0; i<1; i++){
     let enemy = new Enemy({x:10,y:100}, 40, 20, 20, 1000, 100, Enemy.BASIC, field1)
+    enemy.born = true;
     enemies.push(enemy)
   }
 }

@@ -8,3 +8,4 @@ export const hitBoxes = [];
 export const bulletSpeed = 5;
 export const windStorms = [];
 export const bulletRadius = 5;
+export const enemySpeed = 100;
