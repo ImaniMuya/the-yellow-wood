@@ -1,7 +1,8 @@
 import Helpers from "./helpers"
 import Bullet from "./bullets.js";
-import { hitBoxes, bulletSpeed, enemies} from "./globals";
+import { hitBoxes, bulletSpeed, bulletRadius, enemies} from "./globals";
 import Vector from "./vector";
+
 
 export default class Tower{
     constructor(position, type, reloadTime, damage, range){
@@ -55,7 +56,7 @@ export default class Tower{
         if(Helpers.getDistance(this.position, this.target.position) <= this.range){
             //creat bullet with target
             const p = new Vector(this.x, this.y)
-            const newBullet = new Bullet(p, bulletSpeed, this.damage, "divergence", this.target);
+            const newBullet = new Bullet(p, bulletRadius, bulletSpeed, this.damage, "", this.target);
             hitBoxes.push(newBullet);
             this.lastFired = this.lastFired + this.reloadTime;
         }else{

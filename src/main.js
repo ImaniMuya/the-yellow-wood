@@ -33,8 +33,8 @@ function gameDraw() {
 
 function gameUpdate() {
   towers.forEach(tower => {tower.update()})
-  updateEnemies()
   updateHitboxes()
+  updateEnemies()
   updateWindStorms()
 }
 

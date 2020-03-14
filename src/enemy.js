@@ -7,8 +7,9 @@ const fieldFactor = .8;
 const pushFactor = .1;
 
 export class Enemy {
-    constructor(position, width, height, speed, health, type, field){
+    constructor(position, radius, width, height, speed, health, type, field){
         this.position = position;
+        this.radius = radius;
         this.width = width;
         this.height = height;
         this.vel = new Vector(0, 0)
@@ -36,7 +37,9 @@ export class Enemy {
         return this.health;
     }
     takeDamage(damage){
+        console.log(damage);
         this.health = this.health - damage;
+        console.log(this.health);
         if(this.health<= 0){
             this.die();
         }
@@ -79,7 +82,7 @@ export class Enemy {
 
     checkForHit(hitBox){
         //omit positions
-        return Helpers.rectContainsRect(this.position.x, hitBox.position.x, this.position.y, hitBox.position.y, this.width, hitBox.width, this.height, hitBox.height)
+        return Helpers.circleContainCircle(this.position, this.radius, hitBox.position, hitBox.radius)
 
     }
 
@@ -95,7 +98,12 @@ export class Enemy {
     draw(ctx) {
         ctx.fillStyle = "green"
         ctx.beginPath()
-        ctx.arc(this.x,this.y,40,0,2*Math.PI)
+        ctx.arc(this.x,this.y,this.radius,0,2*Math.PI)
+        ctx.fill()
+
+        ctx.fillStyle = "blue"
+        ctx.beginPath()
+        ctx.arc(this.x,this.y,2,0,2*Math.PI)
         ctx.fill()
     }
     getFieldComboVector(){
