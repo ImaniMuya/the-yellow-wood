@@ -94,6 +94,10 @@ function drawUpperHUD(ctx) {
   // resources, abilities, towers?, callWave
   ctx.fillStyle = "#777"
   ctx.fillRect(0,0,SIZE,UH)
+
+  ctx.fillStyle = "purple"
+  ctx.font = "20px Arial";
+  ctx.fillText("resource", 30, 30)
 }
 
 const LH = SIZE * .25
@@ -151,7 +155,7 @@ function stormBtnClicked() {
   cursorHoldState = ABILITY
 }
 var buttons = {
-  "archer": new Button(10,10,100,30,archerBtnClicked),
-  "storm": new Button(200,10,100,30,stormBtnClicked),
+  "archer": new Button(125,10,100,30,archerBtnClicked),
+  "storm": new Button(250,10,100,30,stormBtnClicked),
 
 }
