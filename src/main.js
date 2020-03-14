@@ -1,9 +1,10 @@
 import GameState from "./state"
 import { setUpInputs, drawHUD } from "./hud"
-import { SIZE, getEl, canvas, towers, enemies, hitBoxes, windStorms, resources} from "./globals"
-import { drawMap1 } from "./fields"
+import { SIZE, getEl, canvas, towers, enemies, hitBoxes, windStorms, resources, LINEWIDTH} from "./globals"
 import Spawner from "./spawner";
 import { ResourceCounter } from "./ResourceCounter";
+import { drawMap1 } from "./fields"
+import Vector from "./vector";
 
 const ctx = canvas.getContext("2d")
 let waveSpawner;
@@ -15,6 +16,7 @@ function init(){
   resourceCounter = new ResourceCounter();
   waveSpawner = new Spawner(0, {x:10,y:100}, 1000,10000);
 
+  ctx.lineWidth = LINEWIDTH
 }
 
 setUpInputs()
@@ -56,6 +58,21 @@ function gameUpdate() {
 }
 
 function updateEnemies() {
+  for (let i = 0; i < enemies.length; i++) {
+    let u1 = enemies[i];
+    for (let j = i+1; j < enemies.length; j++) {
+      let u2 = enemies[j];
+      let dx = u2.x - u1.x;
+      if (Math.abs(dx) > u1.r) continue;
+      let dy = u2.y - u1.y;
+      if (Math.abs(dy) > u1.r) continue;
+      let nx = Math.sign(dx) * (u1.r-Math.abs(dx));
+      let ny = Math.sign(dy) * (u1.r-Math.abs(dy));
+
+      u2.nudgeVector = new Vector(nx,ny)
+      u1.nudgeVector = new Vector(-nx,-ny)
+    }
+  }
   for (let i=0; i<enemies.length; i++) {
     let enemy = enemies[i]
     if (enemy.deleted) { 

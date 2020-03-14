@@ -1,4 +1,4 @@
-import { SIZE, canvas, towers, enemies, windStorms } from "./globals"
+import { SIZE, canvas, towers, enemies, windStorms, windType, LINEWIDTH } from "./globals"
 import Vector from "./vector"
 import Tower from "./tower";
 import { Enemy } from "./enemy";
@@ -15,6 +15,7 @@ const K_1 = 49
 const K_2 = 50
 const K_3 = 51
 const K_SPACE = 32
+const K_ESC = 27
 
 var cursorHoldState = 0 //tower or ability
 const NO_SELECTION = 0 
@@ -27,6 +28,10 @@ export function setUpInputs() {
     let k = e.keyCode
     if (keys[k] == true) return;
     keys[k] = true
+    if (k == K_ESC){
+      cursorHoldState = NO_SELECTION
+      selectedObject = null
+    }
   })
   window.addEventListener("keyup", e => {
     let k = e.keyCode
@@ -36,9 +41,10 @@ export function setUpInputs() {
   window.addEventListener("mousedown", e => {
     e.preventDefault()
     updateCursorPos(e)
+    console.log(cursor)
     let k = e.button
     keys[k] = true
-
+    if (k != MLEFT) return //only left click
     // in no selection state
     if (cursorHoldState === NO_SELECTION){
       // click button
@@ -50,8 +56,21 @@ export function setUpInputs() {
         }
       }
       // select tower
+      for (let tower of towers) {
+        if (tower.contains(cursor)) {
+          selectedObject = tower
+          return
+        }
+      }
 
       // select enemy
+      for (let enemy of enemies) {
+        if (enemy.contains(cursor) && !enemy.dead) {
+          selectedObject = enemy
+          return
+        }
+      }
+      selectedObject = null
     } else if (cursorHoldState == TOWER){
       
       if (!isOnPlatform(field1, cursor.x, cursor.y)) {
@@ -63,12 +82,17 @@ export function setUpInputs() {
       let tower = new Tower({x:cursor.x,y:cursor.y}, Tower.BASIC, 1000, 10, 300)
       towers.push(tower)
       cursorHoldState = NO_SELECTION
+      selectedObject = tower
     } else if (cursorHoldState == ABILITY){
       let ws = new WindStorm({x:cursor.x,y:cursor.y}, WindStorm.DIVERGE, 100)      
       windStorms.push(ws)
       enemies.forEach(enemy => {
         if(ws.contains(enemy)){
-          enemy.windVector = ws.getPullVector(enemy.position)
+          if (windType.state == windType.CONVERGING) {
+            enemy.windVector = ws.getPullVector(enemy.position)
+          } else {
+            enemy.windVector = ws.getPushVector(enemy.position)
+          }
         }
       });
       cursorHoldState = NO_SELECTION
@@ -86,6 +110,13 @@ export function setUpInputs() {
     if (keys[k] == true) return;
     keys[k] = true
   })
+
+  canvas.addEventListener("contextmenu", e => {
+    e.preventDefault()
+    cursorHoldState = NO_SELECTION
+    selectedObject = null
+  })
+  
 }
 
 function updateCursorPos(event) {
@@ -97,7 +128,7 @@ function updateCursorPos(event) {
 const hudImg = new Image(SIZE,SIZE)
 hudImg.src = "../assets/hud.png"
 export function drawHUD(ctx) {
-  // ctx.drawImage(hudImg, 0, 0, SIZE, SIZE)
+  ctx.drawImage(hudImg, 0, 0, SIZE, SIZE)
   drawCursorHoldObject(ctx)
 
   drawUpperHUD(ctx)
@@ -107,6 +138,8 @@ export function drawHUD(ctx) {
     let btn = buttons[bName]
     btn.draw(ctx, btn.contains(cursor.x, cursor.y))
   }
+
+  drawSelectedObjectRing(ctx)
 }
 
 const UH = SIZE * .1
@@ -115,21 +148,30 @@ const UH = SIZE * .1
 
 function drawUpperHUD(ctx) {
   // resources, abilities, towers?, callWave
-  // ctx.fillStyle = "#777"
-  // ctx.fillRect(0,0,SIZE,UH)
-
   ctx.fillStyle = "purple"
   ctx.font = "20px Arial";
   ctx.fillText("resource", 30, 30)
   ctx.fillText(resourceCounter.getResources(), 60, 50)
+
+  //draw rect around d/c wind
+  ctx.strokeStyle = "yellow"
+  ctx.lineWidth = 7
+  if (windType.state == windType.CONVERGING) {
+    ctx.strokeRect(625,30,130,130)
+  } else {
+    ctx.strokeRect(800,30,130,130)
+  }
+  ctx.lineWidth = LINEWIDTH
 }
 
 const LH = SIZE * .25
 function drawLowerHUD(ctx) {
   // selected upgrades and details
-  
-  // ctx.fillStyle = "#999"
-  // ctx.fillRect(0,SIZE-LH,SIZE,LH)
+  if (selectedObject instanceof Tower) {
+    Tower.drawTowerProfile(ctx)
+  } else if (selectedObject instanceof Enemy) {
+    Enemy.drawEnemyProfile(ctx)
+  }
 }
 
 function drawCursorHoldObject(ctx) {
@@ -140,6 +182,29 @@ function drawCursorHoldObject(ctx) {
   } else if (cursorHoldState == ABILITY) {
     ctx.fillStyle = "orange"
     ctx.fillRect(cursor.x,cursor.y,20,10)
+  }
+}
+
+function drawSelectedObjectRing(ctx) {
+  if (selectedObject == null) return
+  if (selectedObject instanceof Tower) {
+    ctx.strokeStyle = "yellow"
+    ctx.beginPath()
+    ctx.arc(selectedObject.x,selectedObject.y,selectedObject.range,0,2*Math.PI)
+    ctx.stroke()
+  }
+  else if (selectedObject instanceof Enemy) {
+    ctx.strokeStyle = "lime"
+    ctx.beginPath()
+    ctx.arc(selectedObject.x,selectedObject.y, 30,0,2*Math.PI)
+    ctx.stroke()
+
+  }
+}
+
+export function checkAndDeselectEnemy(enemy) {
+  if (selectedObject == enemy) {
+    selectedObject = null
   }
 }
 
@@ -173,10 +238,12 @@ class Button {
 
 function archerBtnClicked() {
   cursorHoldState = TOWER
+  selectedObject = null
 }
 
 function stormBtnClicked() {
   cursorHoldState = ABILITY
+  selectedObject = null
 }
 
 function waveBtnClicked() {
@@ -187,9 +254,20 @@ function waveBtnClicked() {
   }
 }
 
-var buttons = {
-  "archer": new Button(125,10,100,30,archerBtnClicked),
-  "storm": new Button(250,10,100,30,stormBtnClicked),
-  "wave": new Button(800,10,100,30,waveBtnClicked),
+function convStormBtnClicked() {
+  windType.state = windType.CONVERGING
+  console.log(windType)
+}
 
+function divStormBtnClicked() {
+  windType.state = windType.DIVERGING
+  console.log(windType)
+}
+
+var buttons = {
+  "archer": new Button(240,30,100,100,archerBtnClicked),
+  "storm": new Button(455,46,100,100,stormBtnClicked),
+  // "wave": new Button(800,10,100,30,waveBtnClicked),
+  "convStormBtn": new Button(625,30,130,130,convStormBtnClicked),
+  "divStormBtn": new Button(800,30,130,130,divStormBtnClicked),
 }

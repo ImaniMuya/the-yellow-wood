@@ -13,3 +13,9 @@ export const resourceLifeSpan = 4000;
 export const resourceRadius = 15;
 export const resources = [];
 
+export const windType = {
+  state: 0,
+  DIVERGING: 0,
+  CONVERGING: 1
+};
+export const LINEWIDTH = 4
