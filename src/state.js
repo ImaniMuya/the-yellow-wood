@@ -8,6 +8,8 @@ export default class GameState {
   static get MENU() {return 0}
   static get GAME() {return 1}
   static get SCENE1() {return 2}
+  static get SCENE2() {return 3}
+  static get END() {return 5}
 
   inState(num) {
     return this.state == num
@@ -41,6 +43,9 @@ const divDict = {}
 
 divDict[GameState.GAME] = canvas
 divDict[GameState.MENU] = getEl("menuDiv")
+divDict[GameState.SCENE1] = getEl("scene1")
+divDict[GameState.SCENE2] = getEl("scene2")
+divDict[GameState.END] = getEl("endDiv")
 
 
 const body = getEl("body")

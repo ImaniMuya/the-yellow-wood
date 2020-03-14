@@ -32,9 +32,9 @@ export class Enemy {
         this.r = 20
         this.inWall = true
 
-        if (this.type == Enemy.BOSS) {
+        // if (this.type == Enemy.BOSS) {
             this.anim = new Animation(getEl("bossImg"), frames, Animation.getLoopingFrameSelector(500,2))
-        }
+        // }
         // if (this.type == BASIC) {
         //     this.anim = new Animation("../assets/gnome.png", frames, frameSelector)
         // }
@@ -128,10 +128,10 @@ export class Enemy {
         if(!this.born){
             return
         }
-        if (this.type == Enemy.BOSS) {
+        // if (this.type == Enemy.BOSS) {
             console.log("draw")
             this.anim.draw(ctx, this.x, this.y, false, .1)
-        }
+        // }
         // ctx.fillStyle = "green"
         // ctx.beginPath()
         // ctx.arc(this.x,this.y,this.radius,0,2*Math.PI)
