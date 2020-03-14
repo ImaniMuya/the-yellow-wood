@@ -2,12 +2,19 @@ import GameState from "./state"
 import { setUpInputs, drawHUD } from "./hud"
 import { SIZE, getEl, canvas, towers, enemies, hitBoxes} from "./globals"
 import { drawMap1 } from "./fields"
+import Spawner from "./spawner";
 
 const ctx = canvas.getContext("2d")
+let waveSpawner;
 canvas.width = SIZE
 canvas.height = SIZE
 
+function init(){
+  waveSpawner = new Spawner(0, {x:10,y:100}, 1000,10000);
+}
+
 setUpInputs()
+init();
 // game loop in state.js
 window.gameState = new GameState()
 function startGame() {
@@ -33,6 +40,7 @@ function gameDraw() {
 function gameUpdate() {
   towers.forEach(tower => {tower.update()})
   updateHitboxes()
+  waveSpawner.update();
   updateEnemies();
 }
 
