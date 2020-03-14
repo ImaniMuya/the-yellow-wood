@@ -23,10 +23,10 @@ export default class WindStorm {
   }
 
   draw(ctx) {
-    ctx.fillStyle = "orange"
-    ctx.beginPath()
-    ctx.arc(this.x,this.y,this.r,0,2*Math.PI)
-    ctx.fill()
+    // ctx.fillStyle = "orange"
+    // ctx.beginPath()
+    // ctx.arc(this.x,this.y,this.r,0,2*Math.PI)
+    // ctx.fill()
 
   }
 

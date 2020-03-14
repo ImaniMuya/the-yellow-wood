@@ -63,7 +63,6 @@ export default class Resource{
         }
     }
     draw(ctx) {
-        console.log("draw");
         ctx.fillStyle = "yellow"
         ctx.beginPath()
         ctx.arc(this.x,this.y,this.radius,0,2*Math.PI)

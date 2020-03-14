@@ -1,9 +1,10 @@
-import { SIZE, canvas, towers, enemies, windStorms, windType, LINEWIDTH } from "./globals"
+import { SIZE, canvas, towers, enemies, windStorms, windType, LINEWIDTH, getEl } from "./globals"
 import Vector from "./vector"
 import Tower from "./tower";
 import { Enemy } from "./enemy";
 import { field1, isOnPlatform } from "./fields";
 import WindStorm from "./wind";
+import Animation from "./animator";
 import {resourceCounter} from "./main";
 
 // HUD and input
@@ -41,7 +42,7 @@ export function setUpInputs() {
   window.addEventListener("mousedown", e => {
     e.preventDefault()
     updateCursorPos(e)
-    console.log(cursor)
+    // console.log(cursor)
   
     let k = e.button
     keys[k] = true
@@ -52,6 +53,7 @@ export function setUpInputs() {
       for (let bName in buttons) {
         let btn = buttons[bName]
         if(btn.contains(cursor.x, cursor.y)){
+          if (btn.special && !(selectedObject instanceof Tower)) return
           btn.click()
           return
         }
@@ -182,14 +184,21 @@ function drawLowerHUD(ctx) {
   }
 }
 
+let archerAnim = new Animation(getEl("archerImg"),
+[{"x":106,"y":287,"w":640,"h":837,"ax":440,"ay":518+200}], 
+Animation.getLinearFrameSelector(500,1))
+
 function drawCursorHoldObject(ctx) {
   if (cursorHoldState == NO_SELECTION) return
   if (cursorHoldState == TOWER) {
     ctx.fillStyle = "yellow"
     ctx.fillRect(cursor.x,cursor.y,10,10)
+    archerAnim.draw(ctx, cursor.x, cursor.y, false, .1)
   } else if (cursorHoldState == ABILITY) {
-    ctx.fillStyle = "orange"
-    ctx.fillRect(cursor.x,cursor.y,20,10)
+    ctx.strokeStyle = "orange"
+    ctx.beginPath()
+    ctx.arc(cursor.x,cursor.y,90,0,2*Math.PI)
+    ctx.stroke()
   }
 }
 
@@ -217,12 +226,13 @@ export function checkAndDeselectEnemy(enemy) {
 }
 
 class Button {
-  constructor(x, y, w, h, callback) {
+  constructor(x, y, w, h, callback, special=false) {
     this.x = x
     this.y = y
     this.w = w
     this.h = h
     this.callback = callback
+    this.special = special
   }
 
   contains(x,y){
@@ -236,9 +246,10 @@ class Button {
   click() { this.callback() }
 
   draw(ctx, stroke=false){
-    ctx.fillStyle = "green"
-    ctx.fillRect(this.x,this.y,this.w,this.h)
+    // ctx.fillStyle = "green"
+    // ctx.fillRect(this.x,this.y,this.w,this.h)
     if (!stroke) return
+    if (this.special && !(selectedObject instanceof Tower)) return
     ctx.strokeStyle = "white"
     ctx.strokeRect(this.x,this.y,this.w,this.h)
   }
@@ -256,7 +267,7 @@ function stormBtnClicked() {
 
 function waveBtnClicked() {
   for (let i=0; i<1; i++){
-    let enemy = new Enemy({x:10,y:100}, 40, 20, 20, 1000, 100, Enemy.BASIC, field1)
+    let enemy = new Enemy({x:10,y:100}, 40, 20, 20, 1000, 100, Enemy.BOSS, field1)
     enemy.born = true;
     enemies.push(enemy)
   }
@@ -272,10 +283,16 @@ function divStormBtnClicked() {
   console.log(windType)
 }
 
+function upgradeTower() {
+// do upgrade
+console.log("upgrade")
+}
+
 var buttons = {
   "archer": new Button(240,30,100,100,archerBtnClicked),
   "storm": new Button(455,46,100,100,stormBtnClicked),
-  // "wave": new Button(800,10,100,30,waveBtnClicked),
+  "wave": new Button(800,10,100,30,waveBtnClicked),
   "convStormBtn": new Button(625,30,130,130,convStormBtnClicked),
   "divStormBtn": new Button(800,30,130,130,divStormBtnClicked),
+  "upgrade": new Button(700,728,200,200,upgradeTower, true),
 }

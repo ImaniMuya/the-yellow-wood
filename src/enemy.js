@@ -1,14 +1,18 @@
 import { getFieldVector, B, isOnPath } from "./fields";
 import Helpers from "./helpers";
 import Vector from "./vector";
-import { hitBoxes, windStorms, resources } from "./globals";
+import Animation from "./animator";
+import { hitBoxes, windStorms, resources, enemySpeed, getEl } from "./globals";
 import Resource from "./resource";
 import { checkAndDeselectEnemy } from "./hud"
 
 const fieldFactor = .8
 const pushFactor = .1
 const nudgeFactor = .2
-
+const frames = [
+    {"x":556,"y":587,"w":848,"h":1034,"ax":531+500,"ay":561+600},
+    {"x":1809,"y":845,"w":831,"h":762,"ax":1837+500,"ay":561+600},    
+]
 export class Enemy {
     constructor(position, radius, width, height, speed, health, type, field){
         this.position = position;
@@ -27,12 +31,15 @@ export class Enemy {
         this.nudgeVector = null
         this.r = 20
         this.inWall = true
+
+        if (this.type == Enemy.BOSS) {
+            this.anim = new Animation(getEl("bossImg"), frames, Animation.getLoopingFrameSelector(500,2))
+        }
+        // if (this.type == BASIC) {
+        //     this.anim = new Animation("../assets/gnome.png", frames, frameSelector)
+        // }
+
     }
-    static get types(){
-        return [
-            this.BASIC()
-        ];
-    } 
 
     static get BASIC() { return 52 }
     static get BOSS() { return 53 }
@@ -121,12 +128,14 @@ export class Enemy {
         if(!this.born){
             return
         }
-        ctx.fillStyle = "green"
-        ctx.beginPath()
-        ctx.arc(this.x,this.y,this.radius,0,2*Math.PI)
-        ctx.fill()
-        // spritesheet, frames, frameSelector
-        // anim = new Animation(spritesheet, frames, frameSelector)
+        if (this.type == Enemy.BOSS) {
+            console.log("draw")
+            this.anim.draw(ctx, this.x, this.y, false, .1)
+        }
+        // ctx.fillStyle = "green"
+        // ctx.beginPath()
+        // ctx.arc(this.x,this.y,this.radius,0,2*Math.PI)
+        // ctx.fill()
     }
     getFieldComboVector(){
         let fx = this.x - B/2;
@@ -161,7 +170,8 @@ export class Enemy {
 
     static drawEnemyProfile(ctx) {
         //TODO: base image on type
-        ctx.fillStyle = "green"
-        ctx.fillRect(40,700,300,275)
+        // ctx.fillStyle = "green"
+        // ctx.fillRect(40,700,300,275)
+        ctx.drawImage(getEl("bossImg"), 556,587,848,1034, 40, 700, 300, 275);
     }
 }
