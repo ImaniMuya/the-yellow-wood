@@ -5,4 +5,4 @@ export const canvas = getEl("canvas");
 export const towers = [];
 export const enemies = [];
 export const hitBoxes = []; 
-export const bulletSpeed = 10;
+export const bulletSpeed = 5;

@@ -1,6 +1,7 @@
 import Helpers from "./helpers"
-import bullet from "./bullets.js";
-import { hitBoxes, bulletSpeed} from "./globals";
+import Bullet from "./bullets.js";
+import { hitBoxes, bulletSpeed, enemies} from "./globals";
+import Vector from "./vector";
 
 export default class Tower{
     constructor(position, type, reloadTime, damage, range){
@@ -22,12 +23,11 @@ export default class Tower{
         return this.damage;
     }
 
-    getTarget(){
+    findTarget(){
         if(this.target !== null){ //how does target move out of range?
-            return this.target;
+            return
         } else{
             //we don't have target, find one.
-            const enemies= [];
             const inRangeEnemies = [];
             enemies.forEach(enemy => {
                 if(Helpers.getDistance(enemy, this.position) <= this.range){
@@ -35,30 +35,31 @@ export default class Tower{
                 }
             });
             if(inRangeEnemies.length === 0){
-                return null;
+                return
             }
             this.target = Helpers.getClosestToBase(inRangeEnemies);
             if(this.lastFired < (Date.now() - this.reloadTime)){
                 this.lastFired = Date.now() - this.reloadTime; //this will cause tower to fire instancely after finding a new target 
 
             }
-            return this.target;
+            return
         }
 
     }
 
-    shoot(){
-        if(helper.getDistance <= this.range){
+    shoot() {
+        if(Helpers.getDistance(this.position, this.target.position) <= this.range){
             //creat bullet with target
-            const newBullet = new bullet(this.position, bulletSpeed, this.damage, "divergence", this.target);
-            hitBoxes.push(newBullet); 
+            const p = new Vector(this.x, this.y)
+            const newBullet = new Bullet(p, bulletSpeed, this.damage, "divergence", this.target);
+            hitBoxes.push(newBullet);
             this.lastFired = this.lastFired + this.reloadTime;
         }else{
             this.target = null;
         }
     }
 
-    update(){
+    update() {
         //if we have a target shoot at it 
         if(this.target !== null){
             if(Date.now() >= this.lastFired + this.reloadTime){
@@ -67,9 +68,9 @@ export default class Tower{
         }
         //if not look for a target
         else{
-            this.getTarget();
-
+            this.findTarget();
         }
+
     }
 
     draw(ctx) {
