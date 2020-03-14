@@ -1,16 +1,20 @@
 import GameState from "./state"
 import { setUpInputs, drawHUD } from "./hud"
-import { SIZE, getEl, canvas, towers, enemies, hitBoxes, windStorms} from "./globals"
+import { SIZE, getEl, canvas, towers, enemies, hitBoxes, windStorms, resources} from "./globals"
 import { drawMap1 } from "./fields"
 import Spawner from "./spawner";
+import { ResourceCounter } from "./ResourceCounter";
 
 const ctx = canvas.getContext("2d")
 let waveSpawner;
+export let resourceCounter;
 canvas.width = SIZE
 canvas.height = SIZE
 
 function init(){
+  resourceCounter = new ResourceCounter();
   waveSpawner = new Spawner(0, {x:10,y:100}, 1000,10000);
+
 }
 
 setUpInputs()
@@ -27,6 +31,8 @@ gameState.tick();
 // window.towers = towers
 // window.enemies = enemies
 // window.hitBoxes = hitBoxes
+ window.resources = resources
+
 
 function gameDraw() {
   ctx.clearRect(0,0,SIZE,SIZE)
@@ -35,6 +41,8 @@ function gameDraw() {
   windStorms.forEach(ws => {ws.draw(ctx)})
   enemies.forEach(enemy => {enemy.draw(ctx)})
   hitBoxes.forEach(hb => {hb.draw(ctx)})
+  resources.forEach(r => {r.draw(ctx)})
+
   drawHUD(ctx)
 }
 
@@ -43,7 +51,8 @@ function gameUpdate() {
   updateHitboxes()
   waveSpawner.update();
   updateEnemies();
-  updateWindStorms()
+  updateWindStorms();
+  updateResources();
 }
 
 function updateEnemies() {
@@ -79,6 +88,18 @@ function updateWindStorms() {
       i -= 1
     } else {
       ws.update()
+    }
+  }
+}
+
+function updateResources() {
+  for (let i=0; i<resources.length; i++) {
+    let resource = resources[i]
+    if (resource.deleted) { 
+      resources.splice(i, 1)
+      i -= 1
+    } else {
+      resource.update()
     }
   }
 }

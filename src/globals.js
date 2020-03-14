@@ -9,3 +9,7 @@ export const bulletSpeed = 5;
 export const windStorms = [];
 export const bulletRadius = 5;
 export const enemySpeed = 100;
+export const resourceLifeSpan = 4000;
+export const resourceRadius = 15;
+export const resources = [];
+

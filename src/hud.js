@@ -4,10 +4,11 @@ import Tower from "./tower";
 import { Enemy } from "./enemy";
 import { field1, isOnPlatform } from "./fields";
 import WindStorm from "./wind";
+import {resourceCounter} from "./main";
 
 // HUD and input
 const keys = {} //for debug 
-const cursor = new Vector(-1,-1)
+export const cursor = new Vector(-1,-1)
 const MLEFT = 0
 const MRIGHT = 2
 const K_1 = 49 
@@ -110,6 +111,8 @@ export function drawHUD(ctx) {
 
 const UH = SIZE * .1
 
+
+
 function drawUpperHUD(ctx) {
   // resources, abilities, towers?, callWave
   // ctx.fillStyle = "#777"
@@ -118,6 +121,7 @@ function drawUpperHUD(ctx) {
   ctx.fillStyle = "purple"
   ctx.font = "20px Arial";
   ctx.fillText("resource", 30, 30)
+  ctx.fillText(resourceCounter.getResources(), 60, 50)
 }
 
 const LH = SIZE * .25
