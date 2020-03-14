@@ -1,7 +1,8 @@
 import { getFieldVector, B, isOnPath } from "./fields";
 import Helpers from "./helpers";
 import Vector from "./vector";
-import { hitBoxes, windStorms } from "./globals";
+import { hitBoxes, windStorms, resources } from "./globals";
+import Resource from "./resource";
 import { checkAndDeselectEnemy } from "./hud"
 
 const fieldFactor = .8
@@ -59,6 +60,9 @@ export class Enemy {
         this.speed = 0;
         this.dead = true;
         this.deleted = true;
+        const resource = new Resource({x: this.position.x, y: this.position.y});
+        resources.push(resource);
+
         checkAndDeselectEnemy(this)
     }
     move(){

@@ -52,4 +52,13 @@ export default class Helpers{
     static closeTo(a, b) {
         return Math.abs(a-b) <= .01;
     }
+
+    static randomBetween(low, high){
+        const randomNum = Math.random();
+        const lowHighdiff = high - low;
+        const muti = randomNum * lowHighdiff;
+        const totalCal = muti + low;
+        const calWhole = Math.floor(totalCal);
+        return calWhole;
+    }
 }
