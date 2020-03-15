@@ -17,6 +17,7 @@ function init(){
   waveSpawner = new Spawner(0, {x:10,y:100}, 1000,10000);
 
   ctx.lineWidth = LINEWIDTH
+
 }
 
 setUpInputs()
@@ -25,24 +26,38 @@ init();
 window.gameState = new GameState()
 function startGame() {
   gameState.setState(GameState.GAME, gameUpdate, gameDraw)
+  getEl("menuMusic").pause()
+  getEl("gameMusic").play()
 }
 
 getEl("playBtn").addEventListener("click", startGame)
 getEl("beginBtn").addEventListener("click", ()=>{
   gameState.setState(GameState.SCENE1, ()=>{},  ()=>{})
+  getEl("menuMusic").play()
 })
 getEl("scene1btn").addEventListener("click", ()=>{
   gameState.setState(GameState.SCENE2, ()=>{},  ()=>{})
 })
 getEl("endDivbtn").addEventListener("click", ()=>{
+  gameState.setState(GameState.CRED, ()=>{},  ()=>{})
+  getEl("menuMusic").play()
+  getEl("endMusic").pause()
+  getEl("gameMusic").pause()
+})
+getEl("credBtn").addEventListener("click", ()=>{
+  gameState.setState(GameState.CRED, ()=>{},  ()=>{})
+  getEl("menuMusic").play()
+})
+getEl("credDivbtn").addEventListener("click", ()=>{
   gameState.setState(GameState.MENU, ()=>{},  ()=>{})
+  getEl("menuMusic").play()
 })
 
 gameState.tick();
 window.towers = towers
 window.enemies = enemies
 window.hitBoxes = hitBoxes
- window.resources = resources
+window.resources = resources
 
 
 function gameDraw() {
@@ -53,17 +68,25 @@ function gameDraw() {
   enemies.forEach(enemy => {enemy.draw(ctx)})
   hitBoxes.forEach(hb => {hb.draw(ctx)})
   resources.forEach(r => {r.draw(ctx)})
-
   drawHUD(ctx)
+
 }
 
 function gameUpdate() {
   if(resourceCounter.getGameOver()){
     if(resourceCounter.getWin()){
       console.log("win");
+      gameState.setState(GameState.END, ()=>{},  ()=>{})
+      getEl("gameMusic").pause()
+      getEl("menuMusic").pause()
+      getEl("endMusic").play()
+
     }
     if(resourceCounter.getLose()){
       console.log("lose");
+      gameState.setState(GameState.MENU, ()=>{},  ()=>{})
+      getEl("menuMusic").play()
+      getEl("gameMusic").pause()
     }
     return //dispaly picture
   }

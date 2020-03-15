@@ -86,7 +86,9 @@ export function setUpInputs() {
       if (isInHUD(cursor)) return
       if (!isOnPlatform(field1, cursor.x, cursor.y)) {
         // TODO: sfx ding? 
-        console.log("cant place")
+        getEl("nopeSfx").currentTime = 0
+        getEl("nopeSfx").play()
+        // console.log("cant place")
         return
       }
       // TODO: tower collision (check neighbors)
@@ -145,10 +147,9 @@ function isInHUD(position) {
   return false
 }
 
-const hudImg = new Image(SIZE,SIZE)
-hudImg.src = "../assets/hud.png"
+const hudImg = getEl("hudImg")
 export function drawHUD(ctx) {
-  //ctx.drawImage(hudImg, 0, 0, SIZE, SIZE)
+  ctx.drawImage(hudImg, 0, 0, SIZE, SIZE)
   drawCursorHoldObject(ctx)
 
   drawUpperHUD(ctx)

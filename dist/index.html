@@ -7,16 +7,22 @@
 <body id="body">
   <div id="menuDiv">
     <button id="beginBtn">Begin</button>
-    <!-- <button id="playBtn">Play</button> -->
+    <button id="credBtn">Credits</button>
   </div>
-  <div class="nodisplay" id="scene1"><button id="scene1btn">Next1</button></div>
-  <div class="nodisplay" id="scene2"><button id="playBtn">Next2</button></div>
-  <div class="nodisplay" id="endDiv"><button id="endDivbtn">Next</button></div>
+  <div class="nodisplay" id="scene1"><button id="scene1btn" class="large">Next1</button></div>
+  <div class="nodisplay" id="scene2"><button id="playBtn" class="large">Next2</button></div>
+  <div class="nodisplay" id="endDiv"><button id="endDivbtn" class="large">Next</button></div>
+  <div class="nodisplay" id="credDiv"><button id="credDivbtn" class="large">Back</button></div>
   <canvas id="canvas" class="nodisplay"></canvas>
 </body>
 <img src="/assets/golem.png" alt="" hidden id="bossImg">
 <img src="/assets/arrows.png" alt="" hidden id="arrowImg">
 <img src="/assets/archer.png" alt="" hidden id="archerImg">
 <img src="/assets/mush.png" alt="" hidden id="mushImg">
+<img src="/assets/hud2.png" alt="" hidden id="hudImg">
+<audio id="nopeSfx" src="/assets/nope.wav"></audio>
+<audio id="menuMusic" src="/assets/silent-trees.wav" autoplay></audio>
+<audio id="gameMusic" src="/assets/forest-spirits.wav"></audio>
+<audio id="endMusic" src="/assets/forest-embers.wav"></audio>
 <script src="src/bundle.js"></script>
 </html>

@@ -143,7 +143,6 @@ export class Enemy {
             return
         }
         // if (this.type == Enemy.BOSS) {
-            console.log("draw")
             this.anim.draw(ctx, this.x, this.y, false, .1)
         // }
         // ctx.fillStyle = "green"

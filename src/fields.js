@@ -21,7 +21,7 @@ export function mapContains(i, j) {
 }
 
 const map1Img = new Image(SIZE,SIZE)
-map1Img.src = "../assets/pathMap.png"
+map1Img.src = "../assets/map.png"
 export function drawMap1(ctx) {
   ctx.drawImage(map1Img, 0,0, SIZE, SIZE)
 }

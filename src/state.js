@@ -10,6 +10,7 @@ export default class GameState {
   static get SCENE1() {return 2}
   static get SCENE2() {return 3}
   static get END() {return 5}
+  static get CRED() {return 6}
 
   inState(num) {
     return this.state == num
@@ -46,6 +47,7 @@ divDict[GameState.MENU] = getEl("menuDiv")
 divDict[GameState.SCENE1] = getEl("scene1")
 divDict[GameState.SCENE2] = getEl("scene2")
 divDict[GameState.END] = getEl("endDiv")
+divDict[GameState.CRED] = getEl("credDiv")
 
 
 const body = getEl("body")
