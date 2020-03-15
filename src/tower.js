@@ -109,6 +109,8 @@ export default class Tower{
         ctx.drawImage(getEl("archerImg"),339,1320,859,888, 40, 700, 300, 275);
         ctx.fillStyle = "yellow"
         ctx.fillRect(700,728,200,200)
+        ctx.fillStyle = "purple"
+        ctx.fillText("Upgrade", 770, 830)
     }
 
     upgrade(){
