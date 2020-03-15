@@ -14,7 +14,7 @@ canvas.height = SIZE
 
 function init(){
   resourceCounter = new ResourceCounter();
-  waveSpawner = new Spawner(0, {x:10,y:100}, 1000,10000);
+  waveSpawner = new Spawner(0, {x:10,y:100}, 5000,10000);
 
   ctx.lineWidth = LINEWIDTH
 }

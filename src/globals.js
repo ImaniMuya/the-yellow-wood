@@ -20,7 +20,7 @@ export const windType = {
 };
 export const LINEWIDTH = 4
 export const towerCost = 30;
-export const upgradeCost = 10;
+export const upgradeCost = 20;
 export const towerDamage = 5;
 export const powerCost = 30;
 export const lives = 5;

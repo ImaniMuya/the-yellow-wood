@@ -19,7 +19,7 @@ export default class Spawner{
     }
 
     getWaves(){
-        return this.maxWave -this.waveNumber;
+        return this.maxWave -this.waveNumber + 1;
     }
     
     spawn(){
@@ -31,13 +31,20 @@ export default class Spawner{
     } 
 
     generateNextWave(){
-        const num = 3 + this.waveNumber * 3
+        let num = 3 + this.waveNumber * 3
+        if(num > 15){
+            num = 15;
+        }
         this.generateWave(this.waveNumber, num);
     }
 
     generateWave(difficulty, number){
-        let enemyHealth = 30 + (30* Helpers.randomBetween(1, difficulty));
-        let thisSpeed = enemySpeed + (0.5* Helpers.randomBetween(1, difficulty));
+        let enemyHealth = 30 + (10* Helpers.randomBetween(1, difficulty));
+        let speedDifficulty = difficulty
+        if (speedDifficulty > 5){
+            speedDifficulty = 5;
+        }
+        let thisSpeed = enemySpeed + (0.4* Helpers.randomBetween(1, speedDifficulty*1));
         for (let i = 0; i < number; i++){
             const newEnemy = new Enemy( {x: this.spawnLoc.x, y: this.spawnLoc.y}, 40, 0, 0, thisSpeed, enemyHealth, Enemy.BASIC, field1);
             this.enemiesToSpawn.push(newEnemy);
@@ -59,6 +66,7 @@ export default class Spawner{
 
                 this.generateNextWave();
                 this.waveNumber++;
+                this.timeBetweenSpawn *= 0.5;
             }
         }
     }
