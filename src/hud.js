@@ -5,8 +5,8 @@ import Tower from "./tower";
 import { Enemy } from "./enemy";
 import { field1, isOnPlatform } from "./fields";
 import WindStorm from "./wind";
+import {resourceCounter, waveSpawner} from "./main";
 import Animation from "./animator";
-import {resourceCounter} from "./main";
 
 // HUD and input
 const keys = {} //for debug 
@@ -171,12 +171,15 @@ function drawUpperHUD(ctx) {
   // resources, abilities, towers?, callWave
   ctx.fillStyle = "purple"
   ctx.font = "20px Arial";
-  ctx.fillText("Resource", 30, 30)
+  ctx.fillText("Resource", 20, 30)
   ctx.fillText(resourceCounter.getResources(), 60, 50)
   ctx.fillText("Mana", 115, 30)
   ctx.fillText(resourceCounter.getMana(), 130, 50)
   ctx.fillText("Lives", 170, 30)
   ctx.fillText(resourceCounter.getLives(), 200, 50)
+  ctx.fillText("Waves left", 70, 150)
+  let waveLeft = waveSpawner.getWaves();
+  ctx.fillText(waveSpawner.getWaves(), 110, 170)
 
   //draw rect around d/c wind
   ctx.strokeStyle = "yellow"
@@ -309,8 +312,9 @@ function divStormBtnClicked() {
 }
 
 function upgradeTower() {
-// do upgrade
-console.log("upgrade")
+  // do upgrade
+  selectedObject.upgrade();
+
 }
 
 var buttons = {

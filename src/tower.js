@@ -1,6 +1,6 @@
 import Helpers from "./helpers"
 import Bullet from "./bullets.js";
-import { hitBoxes, bulletSpeed, bulletRadius, enemies, getEl} from "./globals";
+import { hitBoxes, bulletSpeed, bulletRadius, enemies, getEl, upgradeCost} from "./globals";
 import Animation from "./animator";
 import Vector from "./vector";
 import {resourceCounter} from "./main";
@@ -109,6 +109,8 @@ export default class Tower{
         ctx.drawImage(getEl("archerImg"),339,1320,859,888, 40, 700, 300, 275);
         ctx.fillStyle = "yellow"
         ctx.fillRect(700,728,200,200)
+        ctx.fillStyle = "purple"
+        ctx.fillText("Upgrade", 770, 830)
     }
 
     upgrade(){
@@ -116,6 +118,7 @@ export default class Tower{
             //upgrade too expensive
             return
         }
+        resourceCounter.spendResources(upgradeCost);
         this.damage += 3;
         this.range += 50;
         

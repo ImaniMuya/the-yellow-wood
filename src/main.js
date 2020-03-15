@@ -7,14 +7,14 @@ import { drawMap1 } from "./fields"
 import Vector from "./vector";
 
 const ctx = canvas.getContext("2d")
-let waveSpawner;
+export let waveSpawner;
 export let resourceCounter;
 canvas.width = SIZE
 canvas.height = SIZE
 
 function init(){
   resourceCounter = new ResourceCounter();
-  waveSpawner = new Spawner(0, {x:10,y:100}, 1000,10000);
+  waveSpawner = new Spawner(0, {x:10,y:100}, 5000,10000);
 
   ctx.lineWidth = LINEWIDTH
 
