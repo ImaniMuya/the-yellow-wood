@@ -1,11 +1,13 @@
-import { resourceLifeSpan, resourceRadius} from "./globals";
+import { resourceLifeSpan, resourceRadius, getEl} from "./globals";
 import Helpers from "./helpers";
 import {cursor} from "./hud";
 import {resourceCounter} from "./main";
 import Vector from "./vector";
+import Animation from "./animator"
 
-
-
+const frames = [
+    {"x":483,"y":292,"w":96,"h":89,"ax":232,"ay":126},
+]
 export default class Resource{
     constructor(position){
         this.value = Resource.generateValue();
@@ -63,11 +65,11 @@ export default class Resource{
         }
     }
     draw(ctx) {
-        console.log("draw");
-        ctx.fillStyle = "yellow"
-        ctx.beginPath()
-        ctx.arc(this.x,this.y,this.radius,0,2*Math.PI)
-        ctx.fill()
+        // ctx.fillStyle = "yellow"
+        // ctx.beginPath()
+        // ctx.arc(this.x,this.y,this.radius,0,2*Math.PI)
+        // ctx.fill()
+        ctx.drawImage(getEl("mushImg"), 483,292,96,89, this.x-this.radius, this.y-this.radius, this.radius*3, this.radius*3);
     }
 
 }

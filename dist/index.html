@@ -6,9 +6,17 @@
 </head>
 <body id="body">
   <div id="menuDiv">
-    <button id="playBtn">PLAY</button>
+    <button id="beginBtn">Begin</button>
+    <!-- <button id="playBtn">Play</button> -->
   </div>
+  <div class="nodisplay" id="scene1"><button id="scene1btn">Next1</button></div>
+  <div class="nodisplay" id="scene2"><button id="playBtn">Next2</button></div>
+  <div class="nodisplay" id="endDiv"><button id="endDivbtn">Next</button></div>
   <canvas id="canvas" class="nodisplay"></canvas>
 </body>
+<img src="/assets/golem.png" alt="" hidden id="bossImg">
+<img src="/assets/arrows.png" alt="" hidden id="arrowImg">
+<img src="/assets/archer.png" alt="" hidden id="archerImg">
+<img src="/assets/mush.png" alt="" hidden id="mushImg">
 <script src="src/bundle.js"></script>
 </html>

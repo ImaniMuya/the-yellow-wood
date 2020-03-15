@@ -28,11 +28,20 @@ function startGame() {
 }
 
 getEl("playBtn").addEventListener("click", startGame)
+getEl("beginBtn").addEventListener("click", ()=>{
+  gameState.setState(GameState.SCENE1, ()=>{},  ()=>{})
+})
+getEl("scene1btn").addEventListener("click", ()=>{
+  gameState.setState(GameState.SCENE2, ()=>{},  ()=>{})
+})
+getEl("endDivbtn").addEventListener("click", ()=>{
+  gameState.setState(GameState.MENU, ()=>{},  ()=>{})
+})
 
 gameState.tick();
-// window.towers = towers
-// window.enemies = enemies
-// window.hitBoxes = hitBoxes
+window.towers = towers
+window.enemies = enemies
+window.hitBoxes = hitBoxes
  window.resources = resources
 
 

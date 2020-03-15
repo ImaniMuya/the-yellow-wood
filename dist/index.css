@@ -24,4 +24,24 @@ body {
     justify-content: center;
     align-items: center;
     flex-flow: column;
+    background-image: url("/assets/menu.png");
+    background-size: contain;
+}
+
+body > div {
+    width: 90vmin;
+    height: 90vmin;
+}
+
+#scene1 {
+    background-image: url("/assets/scene1.png");
+    background-size: contain;
+}
+#scene2 {
+    background-image: url("/assets/scene2.png");
+    background-size: contain;
+}
+#endDiv {
+    background-image: url("/assets/win.png");
+    background-size: contain;
 }

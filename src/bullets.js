@@ -1,4 +1,14 @@
 import Vector from "./vector";
+import Animation from "./animator";
+import { getEl } from "./globals";
+
+const frames = [
+    {"x":227,"y":243,"w":220,"h":267,"ax":333,"ay":375},
+    {"x":565,"y":243,"w":295,"h":258,"ax":721,"ay":375},
+    {"x":936,"y":189,"w":348,"h":357,"ax":1121,"ay":375},
+    {"x":565,"y":243,"w":295,"h":258,"ax":721,"ay":375},
+
+]
 export default class Bullet {
     constructor(position, radius, speed, damage, type, target){
         this.position = position;
@@ -21,6 +31,8 @@ export default class Bullet {
         this.lifeEnd = Date.now() + this.lifeSpan;
         this.xVel = 0;
         this.yVel = 0;
+        this.anim = new Animation(getEl("arrowImg"), frames, Animation.getLoopingFrameSelector(500,3))
+
     }
 
     get x(){ return this.position.x }
@@ -62,9 +74,10 @@ export default class Bullet {
         
     }
     draw(ctx) {
-        ctx.fillStyle = "blue"
-        ctx.beginPath()
-        ctx.arc(this.x,this.y,10,0,2*Math.PI)
-        ctx.fill()
+        // ctx.fillStyle = "blue"
+        // ctx.beginPath()
+        // ctx.arc(this.x,this.y,10,0,2*Math.PI)
+        // ctx.fill()
+        this.anim.draw(ctx, this.x, this.y, false, .1)
     }
 }
