@@ -51,6 +51,7 @@ getEl("credBtn").addEventListener("click", ()=>{
 getEl("credDivbtn").addEventListener("click", ()=>{
   gameState.setState(GameState.MENU, ()=>{},  ()=>{})
   getEl("menuMusic").play()
+  if(resourceCounter.getWin()) location.reload();
 })
 
 gameState.tick();
