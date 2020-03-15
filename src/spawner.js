@@ -1,6 +1,9 @@
 import { Enemy } from "./enemy";
 import { enemySpeed, enemies } from "./globals";
 import { field1 } from "./fields";
+import Helpers from "./helpers";
+import {resourceCounter} from "./main";
+
 
 
 
@@ -12,6 +15,7 @@ export default class Spawner{
         this.timeBetweenWave = timeBetweenWave;
         this.lastSpawnTime = -1;
         this.enemiesToSpawn = [];
+        this.maxWave = 6;
     }
     
     spawn(){
@@ -23,13 +27,14 @@ export default class Spawner{
     } 
 
     generateNextWave(){
-        const num = 10 + this.waveNumber * 3
-        this.generateWave(this.difficulty, num);
+        const num = 3 + this.waveNumber * 3
+        this.generateWave(this.waveNumber, num);
     }
 
     generateWave(difficulty, number){
+        let enemyHealth = 30 + (30* Helpers.randomBetween(1, difficulty));
         for (let i = 0; i <= number; i++){
-            const newEnemy = new Enemy( {x: this.spawnLoc.x, y: this.spawnLoc.y}, 40, 0, 0, enemySpeed, 50, Enemy.BASIC, field1);
+            const newEnemy = new Enemy( {x: this.spawnLoc.x, y: this.spawnLoc.y}, 40, 0, 0, enemySpeed, enemyHealth, Enemy.BASIC, field1);
             this.enemiesToSpawn.push(newEnemy);
         }
     }
@@ -53,7 +58,13 @@ export default class Spawner{
         }
     }
     update(){
+        if(this.waveNumber > this.maxWave){
+            return
+        }
         this.checkSpawn();
         this.checkWave();
+        if(this.waveNumber === this.maxWave && enemies.length === 0 && this.enemiesToSpawn.length === 0){
+            resourceCounter.win();
+        }
     }
 }

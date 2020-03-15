@@ -3,6 +3,8 @@ import Bullet from "./bullets.js";
 import { hitBoxes, bulletSpeed, bulletRadius, enemies, getEl} from "./globals";
 import Animation from "./animator";
 import Vector from "./vector";
+import {resourceCounter} from "./main";
+
 
 const towerR = 20
 const frames = [
@@ -107,5 +109,15 @@ export default class Tower{
         ctx.drawImage(getEl("archerImg"),339,1320,859,888, 40, 700, 300, 275);
         ctx.fillStyle = "yellow"
         ctx.fillRect(700,728,200,200)
+    }
+
+    upgrade(){
+        if(resourceCounter.getResources() < upgradeCost){
+            //upgrade too expensive
+            return
+        }
+        this.damage += 3;
+        this.range += 50;
+        
     }
 }

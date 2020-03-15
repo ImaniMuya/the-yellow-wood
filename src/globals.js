@@ -8,7 +8,7 @@ export const hitBoxes = [];
 export const bulletSpeed = 5;
 export const windStorms = [];
 export const bulletRadius = 5;
-export const enemySpeed = 100;
+export const enemySpeed = 2;
 export const resourceLifeSpan = 4000;
 export const resourceRadius = 15;
 export const resources = [];
@@ -19,3 +19,8 @@ export const windType = {
   CONVERGING: 1
 };
 export const LINEWIDTH = 4
+export const towerCost = 30;
+export const upgradeCost = 10;
+export const towerDamage = 5;
+export const powerCost = 30;
+export const lives = 5;

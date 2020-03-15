@@ -1,4 +1,5 @@
-import { SIZE, canvas, towers, enemies, windStorms, windType, LINEWIDTH, getEl } from "./globals"
+
+import { SIZE, canvas, towers, enemies, windStorms, windType, LINEWIDTH, getEl, towerCost, towerDamage, powerCost } from "./globals"
 import Vector from "./vector"
 import Tower from "./tower";
 import { Enemy } from "./enemy";
@@ -17,6 +18,7 @@ const K_2 = 50
 const K_3 = 51
 const K_SPACE = 32
 const K_ESC = 27
+const K_B = 66
 
 var cursorHoldState = 0 //tower or ability
 const NO_SELECTION = 0 
@@ -32,6 +34,12 @@ export function setUpInputs() {
     if (k == K_ESC){
       cursorHoldState = NO_SELECTION
       selectedObject = null
+    }
+    if (k === K_B){
+      archerBtnClicked();
+    }
+    if(k === K_SPACE){
+      stormBtnClicked();
     }
   })
   window.addEventListener("keyup", e => {
@@ -82,14 +90,16 @@ export function setUpInputs() {
         return
       }
       // TODO: tower collision (check neighbors)
-      let tower = new Tower({x:cursor.x,y:cursor.y}, Tower.BASIC, 1000, 10, 300)
+      let tower = new Tower({x:cursor.x,y:cursor.y}, Tower.BASIC, 1000, towerDamage, 200)
       towers.push(tower)
+      resourceCounter.spendResources(towerCost);
       cursorHoldState = NO_SELECTION
       selectedObject = tower
     } else if (cursorHoldState == ABILITY){
       if (isInHUD(cursor)) return
       let ws = new WindStorm({x:cursor.x,y:cursor.y}, WindStorm.DIVERGE, 100)      
       windStorms.push(ws)
+      resourceCounter.spendMana(powerCost);
       enemies.forEach(enemy => {
         if(ws.contains(enemy)){
           if (windType.state == windType.CONVERGING) {
@@ -138,7 +148,7 @@ function isInHUD(position) {
 const hudImg = new Image(SIZE,SIZE)
 hudImg.src = "../assets/hud.png"
 export function drawHUD(ctx) {
-  ctx.drawImage(hudImg, 0, 0, SIZE, SIZE)
+  //ctx.drawImage(hudImg, 0, 0, SIZE, SIZE)
   drawCursorHoldObject(ctx)
 
   drawUpperHUD(ctx)
@@ -160,8 +170,12 @@ function drawUpperHUD(ctx) {
   // resources, abilities, towers?, callWave
   ctx.fillStyle = "purple"
   ctx.font = "20px Arial";
-  ctx.fillText("resource", 30, 30)
+  ctx.fillText("Resource", 30, 30)
   ctx.fillText(resourceCounter.getResources(), 60, 50)
+  ctx.fillText("Mana", 115, 30)
+  ctx.fillText(resourceCounter.getMana(), 130, 50)
+  ctx.fillText("Lives", 170, 30)
+  ctx.fillText(resourceCounter.getLives(), 200, 50)
 
   //draw rect around d/c wind
   ctx.strokeStyle = "yellow"
@@ -255,12 +269,22 @@ class Button {
   }
 }
 
+
+
 function archerBtnClicked() {
+  if(resourceCounter.getResources() < towerCost){
+    //can't afford Tower
+    return
+  }
   cursorHoldState = TOWER
   selectedObject = null
 }
 
 function stormBtnClicked() {
+  if(resourceCounter.getMana() < powerCost){
+    //can't afford Tower
+    return
+  }
   cursorHoldState = ABILITY
   selectedObject = null
 }
