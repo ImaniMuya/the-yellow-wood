@@ -61,4 +61,4 @@ export default class WindStorm {
   }
 }
 
-const maxForce = 1000
+const maxForce = 500

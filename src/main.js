@@ -5,6 +5,7 @@ import Spawner from "./spawner";
 import { ResourceCounter } from "./ResourceCounter";
 import { drawMap1 } from "./fields"
 import Vector from "./vector";
+import { Particles } from "./particles"
 
 const ctx = canvas.getContext("2d")
 export let waveSpawner;
@@ -70,13 +71,13 @@ function gameDraw() {
   hitBoxes.forEach(hb => {hb.draw(ctx)})
   resources.forEach(r => {r.draw(ctx)})
   drawHUD(ctx)
-
+  Particles.draw(ctx)
 }
 
 function gameUpdate() {
   if(resourceCounter.getGameOver()){
     if(resourceCounter.getWin()){
-      console.log("win");
+      // console.log("win");
       gameState.setState(GameState.END, ()=>{},  ()=>{})
       getEl("gameMusic").pause()
       getEl("menuMusic").pause()
@@ -84,7 +85,7 @@ function gameUpdate() {
 
     }
     if(resourceCounter.getLose()){
-      console.log("lose");
+      // console.log("lose");
       gameState.setState(GameState.MENU, ()=>{},  ()=>{})
       getEl("menuMusic").play()
       getEl("gameMusic").pause()
@@ -98,6 +99,8 @@ function gameUpdate() {
   updateEnemies();
   updateWindStorms();
   updateResources();
+  Particles.update()
+
 }
 
 function generateMana(){

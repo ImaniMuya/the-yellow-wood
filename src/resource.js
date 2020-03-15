@@ -4,6 +4,7 @@ import {cursor} from "./hud";
 import {resourceCounter} from "./main";
 import Vector from "./vector";
 import Animation from "./animator"
+import { Particles } from "./particles"
 
 const frames = [
     {"x":483,"y":292,"w":96,"h":89,"ax":232,"ay":126},
@@ -34,6 +35,8 @@ export default class Resource{
         this.deleted = true;
         //add resources to total
         resourceCounter.gainResources(this.value);
+        Particles.explode(this.x,this.y,"red",20,5)
+
     }
 
     moveTowardsCursor(){
@@ -42,7 +45,7 @@ export default class Resource{
         if(speed > this.maxSpeed){
             speed = this.maxSpeed;
         }
-        console.log(speed);
+        // console.log(speed);
         const xDiff = cursor.x - this.position.x;
         const yDiff = cursor.y - this.position.y;
         let vector = Vector.normalize(new Vector(xDiff, yDiff));

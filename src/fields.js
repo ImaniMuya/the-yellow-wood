@@ -1,6 +1,6 @@
 
 
-import { SIZE } from "./globals";
+import { SIZE, getEl } from "./globals";
 
 export const B = 20;
 
@@ -20,8 +20,7 @@ export function mapContains(i, j) {
   return true;
 }
 
-const map1Img = new Image(SIZE,SIZE)
-map1Img.src = "../assets/map.png"
+const map1Img = getEl("mapImg")
 export function drawMap1(ctx) {
   ctx.drawImage(map1Img, 0,0, SIZE, SIZE)
 }

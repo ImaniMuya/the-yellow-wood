@@ -7,6 +7,7 @@ import { field1, isOnPlatform } from "./fields";
 import WindStorm from "./wind";
 import {resourceCounter, waveSpawner} from "./main";
 import Animation from "./animator";
+import { Particles } from "./particles"
 
 // HUD and input
 const keys = {} //for debug 
@@ -50,7 +51,7 @@ export function setUpInputs() {
   window.addEventListener("mousedown", e => {
     e.preventDefault()
     updateCursorPos(e)
-    // console.log(cursor)
+    console.log(cursor)
   
     let k = e.button
     keys[k] = true
@@ -85,7 +86,6 @@ export function setUpInputs() {
     } else if (cursorHoldState == TOWER){
       if (isInHUD(cursor)) return
       if (!isOnPlatform(field1, cursor.x, cursor.y)) {
-        // TODO: sfx ding? 
         getEl("nopeSfx").currentTime = 0
         getEl("nopeSfx").play()
         // console.log("cant place")
@@ -94,6 +94,7 @@ export function setUpInputs() {
       // TODO: tower collision (check neighbors)
       let tower = new Tower({x:cursor.x,y:cursor.y}, Tower.BASIC, 1000, towerDamage, 200)
       towers.push(tower)
+      Particles.spiral(cursor.x,cursor.y,"yellow",10,5)
       resourceCounter.spendResources(towerCost);
       cursorHoldState = NO_SELECTION
       selectedObject = tower
@@ -101,6 +102,7 @@ export function setUpInputs() {
       if (isInHUD(cursor)) return
       let ws = new WindStorm({x:cursor.x,y:cursor.y}, WindStorm.DIVERGE, 100)      
       windStorms.push(ws)
+      Particles.spiral(cursor.x,cursor.y,"orange",15,6)
       resourceCounter.spendMana(powerCost);
       enemies.forEach(enemy => {
         if(ws.contains(enemy)){
@@ -170,24 +172,24 @@ const UH = SIZE * .1
 function drawUpperHUD(ctx) {
   // resources, abilities, towers?, callWave
   ctx.fillStyle = "purple"
-  ctx.font = "20px Arial";
+  ctx.font = "30px Arial";
   ctx.fillText("Resource", 20, 30)
-  ctx.fillText(resourceCounter.getResources(), 60, 50)
-  ctx.fillText("Mana", 115, 30)
-  ctx.fillText(resourceCounter.getMana(), 130, 50)
-  ctx.fillText("Lives", 170, 30)
-  ctx.fillText(resourceCounter.getLives(), 200, 50)
-  ctx.fillText("Waves left", 70, 150)
+  ctx.fillText(resourceCounter.getResources(), 20+140, 30)
+  ctx.fillText("Mana", 20, 70)
+  ctx.fillText(resourceCounter.getMana(), 20+90, 70)
+  ctx.fillText("Lives", 20, 110)
+  ctx.fillText(resourceCounter.getLives(), 20+90, 110)
+  ctx.fillText("Waves left", 20, 150)
   let waveLeft = waveSpawner.getWaves();
-  ctx.fillText(waveSpawner.getWaves(), 110, 170)
+  ctx.fillText(waveSpawner.getWaves(), 20+150, 150)
 
   //draw rect around d/c wind
   ctx.strokeStyle = "yellow"
   ctx.lineWidth = 7
   if (windType.state == windType.CONVERGING) {
-    ctx.strokeRect(625,30,130,130)
+    ctx.strokeRect(650,20,140,140)
   } else {
-    ctx.strokeRect(800,30,130,130)
+    ctx.strokeRect(800,20,140,140)
   }
   ctx.lineWidth = LINEWIDTH
 }
@@ -198,7 +200,7 @@ function drawLowerHUD(ctx) {
   if (selectedObject instanceof Tower) {
     Tower.drawTowerProfile(ctx)
   } else if (selectedObject instanceof Enemy) {
-    Enemy.drawEnemyProfile(ctx)
+    Enemy.drawEnemyProfile(ctx, selectedObject.gnome)
   }
 }
 
@@ -278,6 +280,8 @@ class Button {
 function archerBtnClicked() {
   if(resourceCounter.getResources() < towerCost){
     //can't afford Tower
+    getEl("nopeSfx").currentTime = 0
+    getEl("nopeSfx").play()
     return
   }
   cursorHoldState = TOWER
@@ -286,7 +290,9 @@ function archerBtnClicked() {
 
 function stormBtnClicked() {
   if(resourceCounter.getMana() < powerCost){
-    //can't afford Tower
+    //can't afford Storm
+    getEl("nopeSfx").currentTime = 0
+    getEl("nopeSfx").play()
     return
   }
   cursorHoldState = ABILITY
@@ -318,10 +324,10 @@ function upgradeTower() {
 }
 
 var buttons = {
-  "archer": new Button(240,30,100,100,archerBtnClicked),
-  "storm": new Button(455,46,100,100,stormBtnClicked),
+  "archer": new Button(250,25,100,100,archerBtnClicked),
+  "storm": new Button(425,25,180,100,stormBtnClicked),
   "wave": new Button(800,10,100,30,waveBtnClicked),
-  "convStormBtn": new Button(625,30,130,130,convStormBtnClicked),
-  "divStormBtn": new Button(800,30,130,130,divStormBtnClicked),
+  "convStormBtn": new Button(650,20,140,140,convStormBtnClicked),
+  "divStormBtn": new Button(800,20,140,140,divStormBtnClicked),
   "upgrade": new Button(700,728,200,200,upgradeTower, true),
 }

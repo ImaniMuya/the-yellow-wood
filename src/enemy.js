@@ -15,6 +15,11 @@ const frames = [
     {"x":556,"y":587,"w":848,"h":1034,"ax":531+500,"ay":561+600},
     {"x":1809,"y":845,"w":831,"h":762,"ax":1837+500,"ay":561+600},    
 ]
+const frames2 = [
+    {"x":333,"y":362,"w":572,"h":1123,"ax":623,"ay":1401},
+    {"x":1369,"y":374,"w":572,"h":1123,"ax":1671,"ay":1395},
+]
+
 export class Enemy {
     constructor(position, radius, width, height, speed, health, type, field){
         this.position = position;
@@ -33,9 +38,13 @@ export class Enemy {
         this.nudgeVector = null
         this.r = 20
         this.inWall = true
-
+        this.gnome = false
         // if (this.type == Enemy.BOSS) {
         this.anim = new Animation(getEl("bossImg"), frames, Animation.getLoopingFrameSelector(500,2))
+        if (Math.random() < .5) { 
+            this.gnome = true
+            this.anim = new Animation(getEl("gnomeImg"), frames2, Animation.getLoopingFrameSelector(500,2))
+        }
         // }
         // if (this.type == BASIC) {
         //     this.anim = new Animation("../assets/gnome.png", frames, frameSelector)
@@ -162,14 +171,14 @@ export class Enemy {
         let v4 = getFieldVector(this.field, cx, cy);
      
         let xWeight = ((this.x - B/2) - fx) / B; 
-        if (xWeight < 0) console.log(xWeight)
+        // if (xWeight < 0) console.log(xWeight)
         let topx = v1.x * (1-xWeight) +  v2.x * xWeight;
         let topy = v1.y * (1-xWeight) +  v2.y * xWeight;
         let botx = v3.x * (1-xWeight) +  v4.x * xWeight;
         let boty = v3.y * (1-xWeight) +  v4.y * xWeight;
 
         let yWeight = ((this.y - B/2) - fy) / B;
-        if (yWeight < 0) console.log(yWeight)
+        // if (yWeight < 0) console.log(yWeight)
 
         return new Vector(
             topx * (1-yWeight) + botx * yWeight,
@@ -181,10 +190,15 @@ export class Enemy {
         return Helpers.circleContainsPoint(this.position, this.r, position)
     }
 
-    static drawEnemyProfile(ctx) {
+    static drawEnemyProfile(ctx, gnome) {
         //TODO: base image on type
         // ctx.fillStyle = "green"
-        // ctx.fillRect(40,700,300,275)
-        ctx.drawImage(getEl("bossImg"), 556,587,848,1034, 40, 700, 300, 275);
+        // // ctx.fillRect(40,700,300,275)
+        // console.log(gnome)
+        if (gnome) {
+            ctx.drawImage(getEl("gnomeImg"), 333,362,572,1123, 100, 700, 140, 275)
+        }else {
+            ctx.drawImage(getEl("bossImg"), 556,587,848,1034, 40, 700, 300, 275);
+        }
     }
 }

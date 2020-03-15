@@ -24,7 +24,7 @@ body {
     justify-content: flex-end;
     align-items: center;
     flex-flow: column;
-    background-image: url("/assets/menu.png");
+    background-image: url("assets/menu.png");
     background-size: contain;
 }
 
@@ -34,19 +34,19 @@ body > div {
 }
 
 #scene1 {
-    background-image: url("/assets/scene1.png");
+    background-image: url("assets/scene1.png");
     background-size: contain;
 }
 #scene2 {
-    background-image: url("/assets/scene2.png");
+    background-image: url("assets/scene2.png");
     background-size: contain;
 }
 #endDiv {
-    background-image: url("/assets/win.png");
+    background-image: url("assets/win.png");
     background-size: contain;
 }
 #credDiv {
-    background-image: url("/assets/credits.png");
+    background-image: url("assets/credits.png");
     background-size: contain;
 }
 

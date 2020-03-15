@@ -4,6 +4,7 @@ import { hitBoxes, bulletSpeed, bulletRadius, enemies, getEl, upgradeCost} from 
 import Animation from "./animator";
 import Vector from "./vector";
 import {resourceCounter} from "./main";
+import { Particles } from "./particles"
 
 
 const towerR = 20
@@ -107,20 +108,25 @@ export default class Tower{
     //     ctx.fillStyle = "red"
     //     ctx.fillRect(40,700,300,275)
         ctx.drawImage(getEl("archerImg"),339,1320,859,888, 40, 700, 300, 275);
-        ctx.fillStyle = "yellow"
+        ctx.fillStyle = "#AAA"
         ctx.fillRect(700,728,200,200)
+        ctx.strokeStyle = "#000"
+        ctx.strokeRect(700,728,200,200)
         ctx.fillStyle = "purple"
-        ctx.fillText("Upgrade", 770, 830)
+        ctx.fillText("Upgrade (20)", 713, 830)
     }
 
     upgrade(){
         if(resourceCounter.getResources() < upgradeCost){
             //upgrade too expensive
+            getEl("nopeSfx").currentTime = 0
+            getEl("nopeSfx").play()
             return
         }
         resourceCounter.spendResources(upgradeCost);
         this.damage += 3;
         this.range += 50;
+        Particles.spiral(this.x,this.y,"cyan",10,5)
         
     }
 }
