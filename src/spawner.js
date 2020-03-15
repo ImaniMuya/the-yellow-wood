@@ -2,7 +2,7 @@ import { Enemy } from "./enemy";
 import { enemySpeed, enemies } from "./globals";
 import { field1 } from "./fields";
 import Helpers from "./helpers";
-import {resourceCounter} from "./main";
+import {resourceCounter, waveSpawner} from "./main";
 
 
 
@@ -16,6 +16,10 @@ export default class Spawner{
         this.lastSpawnTime = -1;
         this.enemiesToSpawn = [];
         this.maxWave = 6;
+    }
+
+    getWaves(){
+        return this.maxWave -this.waveNumber;
     }
     
     spawn(){
@@ -33,7 +37,7 @@ export default class Spawner{
 
     generateWave(difficulty, number){
         let enemyHealth = 30 + (30* Helpers.randomBetween(1, difficulty));
-        for (let i = 0; i <= number; i++){
+        for (let i = 0; i < number; i++){
             const newEnemy = new Enemy( {x: this.spawnLoc.x, y: this.spawnLoc.y}, 40, 0, 0, enemySpeed, enemyHealth, Enemy.BASIC, field1);
             this.enemiesToSpawn.push(newEnemy);
         }

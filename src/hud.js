@@ -4,7 +4,7 @@ import Tower from "./tower";
 import { Enemy } from "./enemy";
 import { field1, isOnPlatform } from "./fields";
 import WindStorm from "./wind";
-import {resourceCounter} from "./main";
+import {resourceCounter, waveSpawner} from "./main";
 
 // HUD and input
 const keys = {} //for debug 
@@ -173,6 +173,8 @@ function drawUpperHUD(ctx) {
   ctx.fillText(resourceCounter.getMana(), 130, 50)
   ctx.fillText("Lives", 170, 30)
   ctx.fillText(resourceCounter.getLives(), 200, 50)
+  ctx.fillText("Waves left", 70, 150)
+  ctx.fillText(waveSpawner.getWaves(), 110, 170)
 
   //draw rect around d/c wind
   ctx.strokeStyle = "yellow"

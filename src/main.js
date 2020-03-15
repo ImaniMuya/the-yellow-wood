@@ -7,7 +7,7 @@ import { drawMap1 } from "./fields"
 import Vector from "./vector";
 
 const ctx = canvas.getContext("2d")
-let waveSpawner;
+export let waveSpawner;
 export let resourceCounter;
 canvas.width = SIZE
 canvas.height = SIZE
